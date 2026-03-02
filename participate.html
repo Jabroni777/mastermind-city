@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mastermind City | Participate</title>
+    <meta
+      name="description"
+      content="Join Mastermind City by selecting pathways across cooperative living, pod building, and training center development."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="participate">
+    <div class="ambient" aria-hidden="true">
+      <div class="orb orb-one"></div>
+      <div class="orb orb-two"></div>
+      <div class="orb orb-three"></div>
+      <div class="grid-overlay"></div>
+    </div>
+
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="index.html"><span>Mastermind</span> City</a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="site-nav" id="site-nav">
+          <a class="nav-link nav-home" href="index.html">Vision</a>
+          <a class="nav-link nav-model" href="model.html">Model</a>
+          <a class="nav-link nav-charter" href="charter.html">Charter</a>
+          <a class="nav-link nav-technology" href="technology.html">Technology</a>
+          <a class="nav-link nav-participate cta-link" href="participate.html">Participate</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="reveal">
+            <p class="kicker">Participation Pathways</p>
+            <h1>Join the build, not just the conversation</h1>
+            <p class="lede">
+              Mastermind City is designed for people ready to co-create practical
+              alternatives: shared living nodes, training centers, and executable
+              governance prototypes.
+            </p>
+            <div class="actions">
+              <a class="btn btn-primary" href="#apply">Apply to a Pathway</a>
+              <a class="btn btn-ghost" href="charter.html">Review Charter Expectations</a>
+            </div>
+          </div>
+
+          <aside class="panel reveal">
+            <h3>Who This Is For</h3>
+            <ul class="list-clean">
+              <li>Builders with project execution capacity</li>
+              <li>Operators who can run systems and logistics</li>
+              <li>Researchers and analysts who stress-test models</li>
+              <li>Facilitators and educators for training environments</li>
+              <li>Capital and legal allies aligned with opt-in federalism</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="reveal">Pathways</h2>
+          <div class="grid-3">
+            <article class="card reveal">
+              <h3>Short-Term Cooperative Living</h3>
+              <p>
+                Residency cohorts for focused build cycles, retreats, and strategic
+                training events.
+              </p>
+            </article>
+            <article class="card reveal">
+              <h3>Long-Term Shared Living</h3>
+              <p>
+                Durable co-living nodes tied to local production, mutual support,
+                and economic collaboration.
+              </p>
+            </article>
+            <article class="card reveal">
+              <h3>Training Center Development</h3>
+              <p>
+                Facilities for leadership training, practical skills, and
+                high-accountability institution design labs.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="container panel reveal">
+          <h2>Onboarding Flow</h2>
+          <div class="road">
+            <article class="road-step">
+              <h3>1. Orientation</h3>
+              <p>Map your skills, constraints, and strategic domain fit.</p>
+            </article>
+            <article class="road-step">
+              <h3>2. Pod Placement</h3>
+              <p>Join a 5-8 person pod with role rotation and monthly output expectations.</p>
+            </article>
+            <article class="road-step">
+              <h3>3. Pilot Launch</h3>
+              <p>Ship a 90-day pilot and submit it for federated integration pathways.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="apply">
+        <div class="container split">
+          <div class="reveal">
+            <h2>Application Draft</h2>
+            <p class="intro">
+              This form is a starter layer. In production, an AI concierge can route
+              applicants directly to pods, mentors, and live projects.
+            </p>
+            <form id="apply-form" class="panel" novalidate>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="full_name">Full name</label>
+                  <input id="full_name" name="full_name" type="text" required />
+                </div>
+                <div class="form-field">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" required />
+                </div>
+
+                <div class="form-field full">
+                  <label for="track">Primary pathway</label>
+                  <select id="track" name="track" required>
+                    <option value="">Select one...</option>
+                    <option value="short-term">Short-term cooperative living</option>
+                    <option value="long-term">Long-term shared living</option>
+                    <option value="training">Training center development</option>
+                    <option value="governance">Governance + finance systems</option>
+                    <option value="technology">Autonomous tools + platform design</option>
+                  </select>
+                </div>
+
+                <div class="form-field full">
+                  <label for="skills">Current strengths</label>
+                  <textarea
+                    id="skills"
+                    name="skills"
+                    placeholder="What can you actively contribute in the next 90 days?"
+                  ></textarea>
+                </div>
+              </div>
+              <div class="actions">
+                <button type="submit" class="btn btn-primary">Submit Draft</button>
+              </div>
+              <p class="form-status" id="apply-status" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <div class="reveal">
+            <h2>Questions We Ask Early</h2>
+            <div class="faq">
+              <details>
+                <summary>How is this different from a normal online community?</summary>
+                <p>
+                  Output is mandatory. Pods are structured around deliverables,
+                  implementation timelines, and accountability loops.
+                </p>
+              </details>
+              <details>
+                <summary>How are contributions rewarded?</summary>
+                <p>
+                  Through explicit mechanisms: equity participation, financing access,
+                  governance influence, and preferred internal market opportunities.
+                </p>
+              </details>
+              <details>
+                <summary>Is this anti-society or separatist?</summary>
+                <p>
+                  No. The goal is lawful, functional institution building that people
+                  opt into because it works better, not because they are forced.
+                </p>
+              </details>
+              <details>
+                <summary>Where do autonomous agents fit in?</summary>
+                <p>
+                  Agents reduce complexity by helping members navigate rules,
+                  opportunities, and decision pathways without replacing human
+                  accountability.
+                </p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="container panel reveal">
+          <h2>Signal List</h2>
+          <p class="intro">Get updates on pilot launches, public calls, and training cohorts.</p>
+          <form id="join-form" novalidate>
+            <div class="form-grid">
+              <div class="form-field full">
+                <label for="join-email">Email</label>
+                <input id="join-email" type="email" placeholder="you@example.com" required />
+              </div>
+            </div>
+            <div class="actions">
+              <button type="submit" class="btn btn-secondary">Join Updates</button>
+            </div>
+            <p class="form-status" id="join-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <strong>Mastermind City</strong>
+        <p class="footer-note">Opt in. Build well. Federate with leverage.</p>
+        <p class="footer-note">(c) <span data-year></span></p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>

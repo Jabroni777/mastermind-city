@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mastermind City | Autonomous Coordination Stack</title>
+    <meta
+      name="description"
+      content="How autonomous agents and chatbot interfaces can help participants navigate governance, finance, and culture in federated cooperative systems."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="technology">
+    <div class="ambient" aria-hidden="true">
+      <div class="orb orb-one"></div>
+      <div class="orb orb-two"></div>
+      <div class="orb orb-three"></div>
+      <div class="grid-overlay"></div>
+    </div>
+
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="index.html"><span>Mastermind</span> City</a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <span></span>
+          <span></span>
+        </button>
+        <nav class="site-nav" id="site-nav">
+          <a class="nav-link nav-home" href="index.html">Vision</a>
+          <a class="nav-link nav-model" href="model.html">Model</a>
+          <a class="nav-link nav-charter" href="charter.html">Charter</a>
+          <a class="nav-link nav-technology" href="technology.html">Technology</a>
+          <a class="nav-link nav-participate cta-link" href="participate.html">Participate</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="reveal">
+            <p class="kicker">Forward-Looking Systems</p>
+            <h1>
+              Autonomous agents that make complex cooperation
+              <span class="text-gradient">navigable</span>
+            </h1>
+            <p class="lede">
+              Mastermind City can integrate AI copilots and specialized agents to
+              reduce cognitive load, improve transparency, and keep decision loops
+              legible at scale.
+            </p>
+          </div>
+
+          <aside class="panel reveal">
+            <h3>Design Constraint</h3>
+            <p>
+              Automation should assist agency, not replace it. Human governance
+              remains accountable while agents handle routing, summaries,
+              simulations, and protocol checks.
+            </p>
+            <div class="chip-row">
+              <span class="chip">Human override always on</span>
+              <span class="chip">Transparent model outputs</span>
+              <span class="chip">Auditable decision trails</span>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2 class="reveal">Agent Fleet Concepts</h2>
+          <div class="grid-3">
+            <article class="card reveal">
+              <h3>Navigator Concierge</h3>
+              <p>Onboards new members, explains pod pathways, and routes them to relevant opportunities.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Governance Copilot</h3>
+              <p>Surfaces proposal dependencies, voting implications, and policy conflicts before decisions finalize.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Treasury Orchestrator</h3>
+              <p>Models cashflow scenarios, financing options, and matching-fund eligibility.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Risk Sentinel</h3>
+              <p>Flags legal/regulatory risk signals and routes them for human legal review.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Contribution Ledger Agent</h3>
+              <p>Maintains contribution records across labor, capital, and resource inputs.</p>
+            </article>
+            <article class="card reveal">
+              <h3>Training Mentor</h3>
+              <p>Guides members through role-specific learning plans and practical skill drills.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="container panel reveal">
+          <h2>Coordination Data Spine</h2>
+          <div class="road">
+            <article class="road-step">
+              <h3>Identity + Roles</h3>
+              <p>Verified member profiles with role history and credential graph.</p>
+            </article>
+            <article class="road-step">
+              <h3>Contribution Ledger</h3>
+              <p>Work and capital events tracked with clear attribution and auditability.</p>
+            </article>
+            <article class="road-step">
+              <h3>Decision Protocol Log</h3>
+              <p>Proposal lifecycle, governance outcomes, and override events remain transparent.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container split">
+          <div class="reveal">
+            <h2>Navigator Bot Demo</h2>
+            <p class="intro">
+              A lightweight concept interface for asking high-friction coordination
+              questions.
+            </p>
+            <p>
+              In production, this could connect to policy docs, ledgers, and
+              current project states to deliver context-aware guidance.
+            </p>
+            <p>
+              The key design goal is comprehension: reduce intimidation, speed up
+              decision readiness, and keep complex systems approachable.
+            </p>
+          </div>
+
+          <div class="panel bot reveal" id="navigator-bot">
+            <div class="bot-log" id="bot-log" aria-live="polite"></div>
+
+            <div class="bot-quick">
+              <button type="button" data-bot-prompt="How should governance be split between pods and federation?">Governance split</button>
+              <button type="button" data-bot-prompt="How can funding reward contributors fairly?">Capital strategy</button>
+              <button type="button" data-bot-prompt="How would training centers fit into this network?">Training centers</button>
+              <button type="button" data-bot-prompt="How do we preserve autonomy and exit rights?">Autonomy rules</button>
+            </div>
+
+            <form class="bot-form" id="bot-form" novalidate>
+              <label for="bot-input" class="sr-only">Ask the navigator bot</label>
+              <input id="bot-input" type="text" placeholder="Ask about governance, finance, or culture..." />
+              <button class="btn btn-primary" type="submit">Ask</button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <strong>Mastermind City</strong>
+        <p class="footer-note">Agent-augmented coordination for resilient cooperative systems.</p>
+        <p class="footer-note">(c) <span data-year></span></p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
