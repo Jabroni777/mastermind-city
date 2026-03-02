@@ -237,6 +237,9 @@ if (botRoot) {
     if (prompt.includes('fund') || prompt.includes('capital')) {
       return 'Use a contribution ledger + matching pool. Pods that ship assets get preferred financing for second and third projects.';
     }
+    if (prompt.includes('dao') || prompt.includes('treasury') || prompt.includes('token')) {
+      return 'Set DAO contracts to split flows into contributor rewards, federation reserves, and growth capital, with quorum-based governance updates.';
+    }
     if (prompt.includes('training')) {
       return 'Training centers should combine skill tracks, leadership drills, and rotating apprenticeships tied to real cooperative projects.';
     }
