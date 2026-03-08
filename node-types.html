@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Node Types — Mastermind City</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* stem cell header */
+    .stem-intro {
+      max-width: 700px;
+    }
+
+    /* node type cards */
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .type-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      cursor: pointer;
+      transition: border-color .3s, transform .3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .type-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--card-color, var(--border2));
+      transition: opacity .3s;
+    }
+
+    .type-card:hover {
+      border-color: var(--border2);
+      transform: translateY(-3px);
+    }
+
+    .type-card.active {
+      border-color: var(--card-color, var(--border2));
+    }
+
+    .type-glyph {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .type-name {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .type-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--card-color, var(--text-dim));
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .type-desc {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .type-examples {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .type-examples li {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-faint);
+    }
+
+    /* detail panel */
+    .type-detail {
+      display: none;
+      margin-top: 3rem;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius);
+      padding: 3rem;
+      background: var(--surface);
+      animation: fadeUp .4s ease;
+    }
+
+    .type-detail.visible {
+      display: block;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .detail-col h4 {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 0.8rem;
+    }
+
+    .detail-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .detail-col li {
+      font-size: 0.92rem;
+      color: var(--text-dim);
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .detail-col li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--text-faint);
+    }
+
+    /* shared scaffold section */
+    .scaffold-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+    }
+
+    .scaffold-table th {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .scaffold-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    .scaffold-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .scaffold-table tr:hover td {
+      background: var(--surface2);
+    }
+
+    .scaffold-table .fixed {
+      color: var(--gold);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+
+    .scaffold-table .flex {
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+
+    .scaffold-table .custom {
+      color: var(--text-faint);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Mastermind<span>City</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Vision</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="node-types.html">Node Types</a></li>
+      <li><a href="model.html">Model</a></li>
+      <li><a href="charter.html">Charter</a></li>
+      <li><a href="blockchain-dao.html">DAO & Records</a></li>
+      <li><a href="participate.html">Participate</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" style="min-height:55vh;">
+      <div class="hero-bg"></div>
+      <div class="hero-grid-lines"></div>
+      <div class="hero-content">
+        <p class="hero-label">Stem Cell Design</p>
+        <h1>One scaffold. <em>Infinite forms.</em></h1>
+        <p class="hero-sub">
+          A stem cell carries the complete genetic blueprint of an organism,
+          yet differentiates into liver, bone, or nerve depending on context.
+          Mastermind City nodes work the same way.
+        </p>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="section">
+      <div class="container">
+        <div class="stem-intro reveal">
+          <p class="section-label">The Core Insight</p>
+          <h2 class="section-title">What a community <em>does</em> is separate from how it <em>governs</em> itself.</h2>
+          <p style="color:var(--text-dim); margin-bottom:1.2rem;">
+            A monastery and a software studio have almost nothing in common in terms of
+            purpose, culture, daily life, and economics. But they share the same
+            structural challenges: how do small groups make decisions? How are roles
+            distributed? How is conflict resolved? How is contribution tracked?
+          </p>
+          <p style="color:var(--text-dim);">
+            Mastermind City answers those structural questions once, then gets out of the way.
+            Below are seven archetypical node types — not exhaustive categories, but
+            templates that illustrate how the same OS adapts to radically different contexts.
+            Select a type to expand its specific role adaptations, cycle emphases, and examples.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- NODE TYPE GRID -->
+    <section class="section section--dark">
+      <div class="container">
+        <p class="section-label reveal">Templates</p>
+        <h2 class="section-title reveal">Seven archetypes.</h2>
+        <p style="color:var(--text-dim);" class="reveal">Select a type to explore how the OS adapts.</p>
+
+        <div class="type-grid">
+
+          <div class="type-card reveal" style="--card-color:#c9a84c;" onclick="showType('homestead')">
+            <span class="type-glyph">🌾</span>
+            <h3 class="type-name">The Homestead</h3>
+            <span class="type-tag">Land · Food · Family</span>
+            <p class="type-desc">A land-based node centered on food production, animal husbandry, homeschooling, and
+              intentional family life. The oldest human community form, scaffolded for the modern context.</p>
+            <ul class="type-examples">
+              <li>permaculture farm</li>
+              <li>family compound</li>
+              <li>rural intentional community</li>
+              <li>off-grid homestead</li>
+            </ul>
+          </div>
+
+          <div class="type-card reveal" data-delay="60" style="--card-color:#7a9fbf;" onclick="showType('studio')">
+            <span class="type-glyph">◈</span>
+            <h3 class="type-name">The Studio</h3>
+            <span class="type-tag">Creation · Media · Art</span>
+            <p class="type-desc">A creative collective producing music, film, writing, design, or code. The node is both
+              the creative unit and its own economic engine — owning its output and distribution.</p>
+            <ul class="type-examples">
+              <li>music collective</li>
+              <li>independent film crew</li>
+              <li>design studio</li>
+              <li>software cooperative</li>
+            </ul>
+          </div>
+
+          <div class="type-card reveal" data-delay="120" style="--card-color:#b08050;" onclick="showType('guild')">
+            <span class="type-glyph">⚒</span>
+            <h3 class="type-name">The Guild</h3>
+            <span class="type-tag">Craft · Trade · Apprenticeship</span>
+            <p class="type-desc">A skilled-trade collective organized around mastery, apprenticeship, and craft.
+              Preserves and transmits knowledge while operating as a viable economic unit in the modern market.</p>
+            <ul class="type-examples">
+              <li>carpentry collective</li>
+              <li>blacksmith guild</li>
+              <li>artisan food producers</li>
+              <li>technical apprenticeship</li>
+            </ul>
+          </div>
+
+          <div class="type-card reveal" style="--card-color:#8a70c4;" onclick="showType('monastery')">
+            <span class="type-glyph">◯</span>
+            <h3 class="type-name">The Monastery</h3>
+            <span class="type-tag">Practice · Contemplation · Retreat</span>
+            <p class="type-desc">A contemplative community organized around shared practice — meditation, prayer, study,
+              or philosophical inquiry. May host retreats and programs for the wider network.</p>
+            <ul class="type-examples">
+              <li>meditation center</li>
+              <li>philosophical retreat</li>
+              <li>study community</li>
+              <li>secular contemplative house</li>
+            </ul>
+          </div>
+
+          <div class="type-card reveal" data-delay="60" style="--card-color:#4a9c70;" onclick="showType('lab')">
+            <span class="type-glyph">⬡</span>
+            <h3 class="type-name">The Lab</h3>
+            <span class="type-tag">Research · Experiment · Innovation</span>
+            <p class="type-desc">An R&D node. Could be scientific, social, technological, or agricultural. Exists to
+              experiment, document, and share findings with the federation and the wider world.</p>
+            <ul class="type-examples">
+              <li>independent research group</li>
+              <li>social experiment node</li>
+              <li>agtech innovation farm</li>
+              <li>technology cooperative</li>
+            </ul>
+          </div>
+
+          <div class="type-card reveal" data-delay="120" style="--card-color:#c46060;" onclick="showType('agora')">
+            <span class="type-glyph">⬭</span>
+            <h3 class="type-name">The Agora</h3>
+            <span class="type-tag">Education · Community · Service</span>
+            <p class="type-desc">A community-facing node that provides education, services, or gathering space to both
+              members and the surrounding population. The node as institution.</p>
+            <ul class="type-examples">
+              <li>community learning center</li>
+              <li>free school</li>
+              <li>neighborhood cooperative</li>
+              <li>community health hub</li>
+            </ul>
+          </div>
+
+          <div class="type-card reveal" style="--card-color:#c9a84c;" onclick="showType('enterprise')">
+            <span class="type-glyph">◆</span>
+            <h3 class="type-name">The Enterprise</h3>
+            <span class="type-tag">Business · Capital · Economic Engine</span>
+            <p class="type-desc">A node organized primarily as a business collective. Members co-own and co-operate a
+              company, using the OS for governance and the federation for capital access and market development.</p>
+            <ul class="type-examples">
+              <li>worker cooperative</li>
+              <li>co-owned hospitality</li>
+              <li>cooperative services firm</li>
+              <li>multi-member LLC</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- DETAIL PANELS -->
+        <div id="type-homestead" class="type-detail">
+          <p class="section-label" style="color:#c9a84c;">The Homestead</p>
+          <h3>Land-based node adaptations</h3>
+          <p style="color:var(--text-dim); max-width:60ch; margin-top:0.5rem;">The Homestead adapts the OS toward
+            seasonal rhythms rather than calendar months. The 30-day cycle maps to lunar or agricultural cycles.</p>
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Role Adaptations</h4>
+              <ul>
+                <li>Navigator → Steward of the Land</li>
+                <li>Builder → Grower / Tender</li>
+                <li>Steward → Resource Keeper</li>
+                <li>Chronicler → Memory Keeper</li>
+                <li>Connector → Community Liaison</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Cycle Emphasis</h4>
+              <ul>
+                <li>Season planning replaces monthly sprint</li>
+                <li>Harvest retrospectives are primary reviews</li>
+                <li>Land stewardship tracked in ledger</li>
+                <li>Children included in ceremony layers</li>
+                <li>The Manual holds seed histories, weather records</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Federation Value</h4>
+              <ul>
+                <li>Food surplus shared via inter-node market</li>
+                <li>Labor exchange during harvest periods</li>
+                <li>Seed and knowledge library</li>
+                <li>Training programs for new homesteaders</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="type-studio" class="type-detail">
+          <p class="section-label" style="color:#7a9fbf;">The Studio</p>
+          <h3>Creative collective adaptations</h3>
+          <p style="color:var(--text-dim); max-width:60ch; margin-top:0.5rem;">The Studio maps the 30-day cycle to
+            project sprints. Contribution is tracked in creative output — hours, deliverables, IP created — rather than
+            physical labor.</p>
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Role Adaptations</h4>
+              <ul>
+                <li>Navigator → Creative Director</li>
+                <li>Builder → Producer / Maker</li>
+                <li>Steward → Business Manager</li>
+                <li>Chronicler → Archivist / Editor</li>
+                <li>Connector → Promoter / Relations</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Cycle Emphasis</h4>
+              <ul>
+                <li>Monthly release or milestone target</li>
+                <li>IP ownership defined in charter</li>
+                <li>Revenue split rules in contribution ledger</li>
+                <li>Retrospective includes audience response</li>
+                <li>The Manual holds creative mythology, influences</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Federation Value</h4>
+              <ul>
+                <li>Cross-node creative collaborations</li>
+                <li>Shared distribution infrastructure</li>
+                <li>Training center programming content</li>
+                <li>Cultural production for the network</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="type-guild" class="type-detail">
+          <p class="section-label" style="color:#b08050;">The Guild</p>
+          <h3>Craft and trade adaptations</h3>
+          <p style="color:var(--text-dim); max-width:60ch; margin-top:0.5rem;">The Guild centers apprenticeship. The OS
+            tracks mastery progression alongside contribution, and the Chronicler holds the craft knowledge base — the
+            living technical manual of the trade.</p>
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Role Adaptations</h4>
+              <ul>
+                <li>Navigator → Master Craftsperson</li>
+                <li>Builder → Journeyperson</li>
+                <li>Steward → Works Manager</li>
+                <li>Chronicler → Knowledge Keeper</li>
+                <li>Connector → Market Liaison</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Cycle Emphasis</h4>
+              <ul>
+                <li>Apprentice advancement tracked formally</li>
+                <li>Skills ledger alongside contribution ledger</li>
+                <li>Masterwork milestones in cycle record</li>
+                <li>Journeyperson exchange with other guilds</li>
+                <li>The Manual holds craft lineage and technique</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Federation Value</h4>
+              <ul>
+                <li>Preferred vendor status in network contracts</li>
+                <li>Cross-guild apprentice exchange</li>
+                <li>Shared equipment and workshop access</li>
+                <li>Verified skill credentials for members</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="type-monastery" class="type-detail">
+          <p class="section-label" style="color:#8a70c4;">The Monastery</p>
+          <h3>Contemplative node adaptations</h3>
+          <p style="color:var(--text-dim); max-width:60ch; margin-top:0.5rem;">The Monastery is the most OS-light of all
+            types. The structure serves the practice, not the other way. Silence, ritual, and slowness are features —
+            the cycle rhythm accommodates them.</p>
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Role Adaptations</h4>
+              <ul>
+                <li>Navigator → Abbot / Head of Practice</li>
+                <li>Builder → Hospitality / Maintenance</li>
+                <li>Steward → Cellarer (resources)</li>
+                <li>Chronicler → Scribe</li>
+                <li>Connector → Guest Relations</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Cycle Emphasis</h4>
+              <ul>
+                <li>Daily practice rhythm supersedes OS rhythm</li>
+                <li>Retreat programming generates income</li>
+                <li>Silence periods respected in meeting schedule</li>
+                <li>The Manual is central — the living rule</li>
+                <li>Annual rather than monthly review cycles optional</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Federation Value</h4>
+              <ul>
+                <li>Retreat space for federation members</li>
+                <li>Contemplative programming for network</li>
+                <li>Grounding function for high-output nodes</li>
+                <li>Conflict resolution support for other nodes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="type-lab" class="type-detail">
+          <p class="section-label" style="color:#4a9c70;">The Lab</p>
+          <h3>Research and experiment adaptations</h3>
+          <p style="color:var(--text-dim); max-width:60ch; margin-top:0.5rem;">The Lab treats each 30-day cycle as a
+            research sprint. Findings are documented in the cycle record and shared openly with the federation and the
+            public.</p>
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Role Adaptations</h4>
+              <ul>
+                <li>Navigator → Principal Investigator</li>
+                <li>Builder → Researcher / Experimenter</li>
+                <li>Steward → Grants and Resources</li>
+                <li>Chronicler → Documentation Lead</li>
+                <li>Connector → External Collaborations</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Cycle Emphasis</h4>
+              <ul>
+                <li>Hypothesis defined at Opening</li>
+                <li>Experiment log maintained by Chronicler</li>
+                <li>Findings published at Close</li>
+                <li>Failure documentation as valued as success</li>
+                <li>The Manual holds the intellectual tradition</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Federation Value</h4>
+              <ul>
+                <li>Open findings benefit all nodes</li>
+                <li>Testing ground for OS improvements</li>
+                <li>Grant-funded work shared with federation</li>
+                <li>Technical consulting for other nodes</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="type-agora" class="type-detail">
+          <p class="section-label" style="color:#c46060;">The Agora</p>
+          <h3>Community-facing node adaptations</h3>
+          <p style="color:var(--text-dim); max-width:60ch; margin-top:0.5rem;">The Agora is outward-facing by design.
+            Its primary relationship is with the surrounding community, not just the federation. The Connector role is
+            expanded.</p>
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Role Adaptations</h4>
+              <ul>
+                <li>Navigator → Community Director</li>
+                <li>Builder → Program Coordinator</li>
+                <li>Steward → Finance and Grants</li>
+                <li>Chronicler → Librarian / Archivist</li>
+                <li>Connector → Expanded — two members</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Cycle Emphasis</h4>
+              <ul>
+                <li>Program calendar replaces sprint planning</li>
+                <li>Community participation metrics tracked</li>
+                <li>Public events as primary deliverables</li>
+                <li>Scholarship and access explicitly tracked</li>
+                <li>The Manual holds community stories</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Federation Value</h4>
+              <ul>
+                <li>Public interface for the wider network</li>
+                <li>Recruitment funnel for new node members</li>
+                <li>Training center programming delivery</li>
+                <li>Bridge between nodes and non-members</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="type-enterprise" class="type-detail">
+          <p class="section-label" style="color:#c9a84c;">The Enterprise</p>
+          <h3>Business collective adaptations</h3>
+          <p style="color:var(--text-dim); max-width:60ch; margin-top:0.5rem;">The Enterprise is the most economically
+            focused node type. The OS handles what traditional company structure usually handles: governance, role
+            clarity, and accountability — without the hierarchy.</p>
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Role Adaptations</h4>
+              <ul>
+                <li>Navigator → Managing Director</li>
+                <li>Builder → Operations Lead</li>
+                <li>Steward → CFO function</li>
+                <li>Chronicler → Secretary / Compliance</li>
+                <li>Connector → Business Development</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Cycle Emphasis</h4>
+              <ul>
+                <li>Revenue and pipeline reviewed at opening</li>
+                <li>Contribution ledger is equity-weighted</li>
+                <li>Exit rights formalized in charter</li>
+                <li>Monthly P&amp;L presented by Steward</li>
+                <li>The Manual holds company mythology, values</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Federation Value</h4>
+              <ul>
+                <li>Primary economic engine of the network</li>
+                <li>Capital multiplier through federation access</li>
+                <li>Internal market preferred vendor channels</li>
+                <li>Shared legal and financial infrastructure</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SHARED SCAFFOLD TABLE -->
+    <section class="section">
+      <div class="container">
+        <p class="section-label reveal">What Stays Fixed</p>
+        <h2 class="section-title reveal">The invariant scaffold.</h2>
+        <p class="section-sub reveal">
+          Across all seven types, these elements remain constant. Everything else is
+          adapted by the node according to its context and culture.
+        </p>
+        <div class="reveal" style="overflow-x:auto;">
+          <table class="scaffold-table">
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Fixed / Flexible / Custom</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Node size (4–8 members)</td>
+                <td class="fixed">Fixed</td>
+                <td>The coordination sweet spot. Below 4, too fragile. Above 8, coordination cost rises sharply.</td>
+              </tr>
+              <tr>
+                <td>30-day cycle structure</td>
+                <td class="flex">Flexible</td>
+                <td>Phases are fixed; timing can adapt to seasonal or project rhythms.</td>
+              </tr>
+              <tr>
+                <td>Five core roles</td>
+                <td class="flex">Flexible</td>
+                <td>Names and emphasis adapt; functional responsibilities are fixed.</td>
+              </tr>
+              <tr>
+                <td>90-day role rotation</td>
+                <td class="fixed">Fixed</td>
+                <td>Non-negotiable. Prevents power consolidation; develops all members.</td>
+              </tr>
+              <tr>
+                <td>Consent-based decisions</td>
+                <td class="fixed">Fixed</td>
+                <td>The decision framework does not change by type.</td>
+              </tr>
+              <tr>
+                <td>Contribution ledger</td>
+                <td class="flex">Flexible</td>
+                <td>What is tracked (hours, output, capital) adapts; transparency requirement does not.</td>
+              </tr>
+              <tr>
+                <td>Cryptographic node identity</td>
+                <td class="fixed">Fixed</td>
+                <td>Required for federation participation and inter-node trust.</td>
+              </tr>
+              <tr>
+                <td>Exit rights</td>
+                <td class="fixed">Fixed</td>
+                <td>Any member may exit any node. Any node may exit any federation. Non-negotiable.</td>
+              </tr>
+              <tr>
+                <td>Culture &amp; values</td>
+                <td class="custom">Custom</td>
+                <td>Entirely defined by the node. The OS takes no position.</td>
+              </tr>
+              <tr>
+                <td>Economic model</td>
+                <td class="custom">Custom</td>
+                <td>Gift economy, market economy, cooperative — the node decides.</td>
+              </tr>
+              <tr>
+                <td>The Manual interface</td>
+                <td class="custom">Custom</td>
+                <td>Managed by the Chronicler; content and form entirely organic.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section section--dark">
+      <div class="container text-center">
+        <p class="section-label reveal">Ready?</p>
+        <h2 style="max-width:500px; margin: 0 auto 1.5rem;" class="reveal">The technology is designed to disappear.</h2>
+        <p style="color:var(--text-dim); max-width:48ch; margin:0 auto 2.5rem;" class="reveal">
+          See how the OS is built to be local-first, off-grid capable, and deliberately
+          minimal — infrastructure that gets out of the way.
+        </p>
+        <div class="flex gap-1 flex-wrap" style="justify-content:center;">
+          <a href="blockchain-dao.html" class="btn btn-primary reveal">DAO & Records →</a>
+          <a href="participate.html" class="btn btn-secondary reveal" data-delay="80">Get Involved</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span class="footer-logo">Mastermind<span style="color:var(--gold)">City</span></span>
+    <ul class="footer-links">
+      <li><a href="index.html">Vision</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="charter.html">Charter</a></li>
+      <li><a href="blockchain-dao.html">DAO & Records</a></li>
+      <li><a href="participate.html">Participate</a></li>
+    </ul>
+    <span class="footer-copy">A proposal for resilient, opt-in cooperative civilization.</span>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function showType(type) {
+      // hide all details
+      document.querySelectorAll('.type-detail').forEach(el => el.classList.remove('visible'));
+      // remove active from all cards
+      document.querySelectorAll('.type-card').forEach(el => el.classList.remove('active'));
+
+      // show selected
+      const detail = document.getElementById('type-' + type);
+      if (detail) {
+        detail.classList.add('visible');
+        detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // mark card active
+      event.currentTarget.classList.add('active');
+    }
+  </script>
+</body>
+
+</html>
