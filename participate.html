@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +9,7 @@
   <style>
     /* proposal stage banner */
     .proposal-banner {
-      background: rgba(201,168,76,0.06);
+      background: rgba(201, 168, 76, 0.06);
       border: 1px solid var(--gold-dim);
       border-radius: var(--radius);
       padding: 2rem 2.5rem;
@@ -17,6 +18,7 @@
       align-items: flex-start;
       margin-bottom: 4rem;
     }
+
     .proposal-banner-icon {
       font-family: var(--serif);
       font-size: 2.5rem;
@@ -24,10 +26,12 @@
       line-height: 1;
       flex-shrink: 0;
     }
+
     .proposal-banner h3 {
       margin-bottom: 0.5rem;
       font-size: 1.3rem;
     }
+
     .proposal-banner p {
       color: var(--text-dim);
       font-size: 0.95rem;
@@ -40,6 +44,7 @@
       flex-wrap: wrap;
       margin-bottom: 3rem;
     }
+
     .pathway-tab {
       font-family: var(--mono);
       font-size: 0.68rem;
@@ -53,12 +58,26 @@
       color: var(--text-dim);
       transition: all .2s;
     }
-    .pathway-tab:hover  { border-color: var(--border2); color: var(--text); }
-    .pathway-tab.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.06); }
+
+    .pathway-tab:hover {
+      border-color: var(--border2);
+      color: var(--text);
+    }
+
+    .pathway-tab.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(201, 168, 76, 0.06);
+    }
 
     /* pathway panels */
-    .pathway-panel { display: none; }
-    .pathway-panel.active { display: block; }
+    .pathway-panel {
+      display: none;
+    }
+
+    .pathway-panel.active {
+      display: block;
+    }
 
     /* pathway content grid */
     .pathway-content {
@@ -73,30 +92,44 @@
       position: relative;
       padding-left: 2.5rem;
     }
+
     .journey-track::before {
       content: '';
       position: absolute;
-      left: 11px; top: 1rem; bottom: 1rem;
+      left: 11px;
+      top: 1rem;
+      bottom: 1rem;
       width: 1px;
       background: linear-gradient(to bottom, var(--gold-dim), var(--border));
     }
+
     .journey-step {
       position: relative;
       padding: 1.2rem 0 1.2rem 1.5rem;
       border-bottom: 1px solid var(--border);
     }
-    .journey-step:last-child { border-bottom: none; }
+
+    .journey-step:last-child {
+      border-bottom: none;
+    }
+
     .journey-step::before {
       content: '';
       position: absolute;
-      left: -2.5rem; top: 1.5rem;
-      width: 8px; height: 8px;
+      left: -2.5rem;
+      top: 1.5rem;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: var(--border2);
       border: 1px solid var(--bg);
       z-index: 1;
     }
-    .journey-step.active-step::before { background: var(--gold); }
+
+    .journey-step.active-step::before {
+      background: var(--gold);
+    }
+
     .journey-step-label {
       font-family: var(--mono);
       font-size: 0.62rem;
@@ -105,8 +138,15 @@
       color: var(--text-faint);
       margin-bottom: 0.3rem;
     }
-    .journey-step h4 { margin-bottom: 0.3rem; }
-    .journey-step p  { font-size: 0.88rem; color: var(--text-dim); }
+
+    .journey-step h4 {
+      margin-bottom: 0.3rem;
+    }
+
+    .journey-step p {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+    }
 
     /* role detail card */
     .role-card {
@@ -115,10 +155,12 @@
       border-radius: var(--radius);
       padding: 2rem;
     }
+
     .role-card h3 {
       font-size: 1.4rem;
       margin-bottom: 0.5rem;
     }
+
     .role-card .role-subtitle {
       font-family: var(--mono);
       font-size: 0.68rem;
@@ -127,11 +169,16 @@
       text-transform: uppercase;
       margin-bottom: 1.5rem;
     }
+
     .role-detail-row {
       padding: 1rem 0;
       border-bottom: 1px solid var(--border);
     }
-    .role-detail-row:last-child { border-bottom: none; }
+
+    .role-detail-row:last-child {
+      border-bottom: none;
+    }
+
     .role-detail-row h5 {
       font-family: var(--mono);
       font-size: 0.65rem;
@@ -140,19 +187,26 @@
       color: var(--text-faint);
       margin-bottom: 0.4rem;
     }
-    .role-detail-row p { font-size: 0.9rem; color: var(--text-dim); }
+
+    .role-detail-row p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
     .role-detail-row ul {
       list-style: none;
       display: flex;
       flex-direction: column;
       gap: 0.3rem;
     }
+
     .role-detail-row li {
       font-size: 0.88rem;
       color: var(--text-dim);
       padding-left: 1rem;
       position: relative;
     }
+
     .role-detail-row li::before {
       content: '—';
       position: absolute;
@@ -167,16 +221,19 @@
       gap: 1.5rem;
       margin-top: 2rem;
     }
+
     .pilot-month {
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
     }
+
     .pilot-month-header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       padding: 1.2rem 1.5rem;
     }
+
     .pilot-month-header .m-label {
       font-family: var(--mono);
       font-size: 0.65rem;
@@ -185,27 +242,35 @@
       color: var(--text-faint);
       margin-bottom: 0.3rem;
     }
-    .pilot-month-header h3 { font-size: 1.2rem; }
+
+    .pilot-month-header h3 {
+      font-size: 1.2rem;
+    }
+
     .pilot-month-body {
       padding: 1.2rem 1.5rem;
     }
+
     .pilot-month-body p {
       font-size: 0.9rem;
       color: var(--text-dim);
       margin-bottom: 1rem;
     }
+
     .pilot-month-body ul {
       list-style: none;
       display: flex;
       flex-direction: column;
       gap: 0.4rem;
     }
+
     .pilot-month-body li {
       font-size: 0.85rem;
       color: var(--text-dim);
       padding-left: 1rem;
       position: relative;
     }
+
     .pilot-month-body li::before {
       content: '›';
       position: absolute;
@@ -221,9 +286,11 @@
       padding: 2.5rem;
       max-width: 550px;
     }
+
     .form-field {
       margin-bottom: 1.5rem;
     }
+
     .form-field label {
       display: block;
       font-family: var(--mono);
@@ -233,6 +300,7 @@
       color: var(--text-dim);
       margin-bottom: 0.5rem;
     }
+
     .form-field input,
     .form-field select,
     .form-field textarea {
@@ -248,514 +316,554 @@
       transition: border-color .2s;
       resize: vertical;
     }
+
     .form-field input:focus,
     .form-field select:focus,
-    .form-field textarea:focus { border-color: var(--gold); }
-    .form-field select option { background: var(--surface); }
+    .form-field textarea:focus {
+      border-color: var(--gold);
+    }
+
+    .form-field select option {
+      background: var(--surface);
+    }
 
     @media (max-width: 768px) {
-      .pathway-content { grid-template-columns: 1fr; }
-      .pilot-grid { grid-template-columns: 1fr; }
-      .proposal-banner { flex-direction: column; gap: 1rem; }
+      .pathway-content {
+        grid-template-columns: 1fr;
+      }
+
+      .pilot-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .proposal-banner {
+        flex-direction: column;
+        gap: 1rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<nav>
-  <a href="index.html" class="nav-logo">Mastermind<span>City</span></a>
-  <ul class="nav-links">
-    <li><a href="index.html">Vision</a></li>
-    <li><a href="how-it-works.html">How It Works</a></li>
-    <li><a href="node-types.html">Node Types</a></li>
-    <li><a href="model.html">Model</a></li>
-    <li><a href="charter.html">Charter</a></li>
-    <li><a href="blockchain-dao.html">DAO & Records</a></li>
-    <li><a href="participate.html">Participate</a></li>
-  </ul>
-  <button class="nav-hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-</nav>
+  <nav>
+    <a href="index.html" class="nav-logo">Mastermind<span>City</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Vision</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="node-types.html">Node Types</a></li>
+      <li><a href="model.html">Model</a></li>
+      <li><a href="charter.html">Charter</a></li>
+      <li><a href="blockchain-dao.html">DAO & Records</a></li>
+      <li><a href="participate.html">Participate</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-<main>
+  <main>
 
-  <!-- HERO -->
-  <section class="hero" style="min-height:50vh;">
-    <div class="hero-bg"></div>
-    <div class="hero-grid-lines"></div>
-    <div class="hero-content">
-      <p class="hero-label">Build With Us</p>
-      <h1>How to <em>get involved.</em></h1>
-      <p class="hero-sub">
-        Mastermind City is at the proposal stage. Every person who engages now
-        is shaping the foundation. This page maps every pathway — from curious
-        reader to founding node.
-      </p>
-    </div>
-  </section>
-
-  <!-- PROPOSAL STAGE EXPLAINER -->
-  <section class="section">
-    <div class="container">
-      <div class="proposal-banner reveal">
-        <div class="proposal-banner-icon">◎</div>
-        <div>
-          <h3>What "Proposal Stage" Means</h3>
-          <p>
-            Mastermind City currently exists as a detailed specification — a thorough working-out
-            of the concept, its mechanics, and its technical architecture. The OS does not yet
-            exist as downloadable software. No federation is yet live. This is deliberate.
-          </p>
-          <p style="margin-top:0.8rem;">
-            The proposal stage is where the design is stress-tested, the pilot community is
-            identified, and the founding infrastructure decisions are made. The people who
-            participate now are not users of a finished product — they are co-designers of it.
-            Their input directly shapes what gets built, in what order, and for whom.
-          </p>
-          <p style="margin-top:0.8rem;">
-            The 90-Day Pilot Framework below is the specific path from proposal to first
-            live node. If you're serious about building or joining a pilot node, that's
-            the onboarding map.
-          </p>
-        </div>
+    <!-- HERO -->
+    <section class="hero" style="min-height:50vh;">
+      <div class="hero-bg"></div>
+      <div class="hero-grid-lines"></div>
+      <div class="hero-content">
+        <p class="hero-label">Build With Us</p>
+        <h1>How to <em>get involved.</em></h1>
+        <p class="hero-sub">
+          Mastermind City is at the proposal stage. Every person who engages now
+          is shaping the foundation. This page maps every pathway — from curious
+          reader to founding node.
+        </p>
       </div>
+    </section>
 
-      <!-- 90-DAY PILOT FRAMEWORK -->
-      <p class="section-label reveal">From Proposal to Reality</p>
-      <h2 class="section-title reveal">The 90-Day Pilot Framework.</h2>
-      <p class="section-sub reveal">
-        The pilot framework takes a group of committed people from first conversation
-        to a live, operating node with a signed charter, assigned roles, and a
-        functioning OS instance — in three months.
-      </p>
-      <div class="pilot-grid">
-        <div class="pilot-month reveal">
-          <div class="pilot-month-header">
-            <p class="m-label">Month 1</p>
-            <h3>Orientation & Alignment</h3>
-          </div>
-          <div class="pilot-month-body">
-            <p>Ground everyone in the concepts. Identify who genuinely wants to build together. Surface assumptions and differences early.</p>
-            <ul>
-              <li>Work through the core documents as a group</li>
-              <li>Each person writes a one-page vision of what they want to build</li>
-              <li>Map the group's skills, resources, and constraints honestly</li>
-              <li>Identify which node type best fits the group's intent</li>
-              <li>Surface and name any major concerns or blockers</li>
-              <li>End with a decision: continue to Month 2, or part ways respectfully</li>
-            </ul>
-          </div>
-        </div>
-        <div class="pilot-month reveal" data-delay="80">
-          <div class="pilot-month-header">
-            <p class="m-label">Month 2</p>
-            <h3>Design & Stress-Test</h3>
-          </div>
-          <div class="pilot-month-body">
-            <p>Design the specific node. Stress-test the assumptions. Make the model concrete enough to commit to.</p>
-            <ul>
-              <li>Draft the node's charter and purpose statement</li>
-              <li>Assign provisional roles — live with them for a month</li>
-              <li>Simulate a full 30-day cycle on paper before running one live</li>
-              <li>Identify the node's economic model and resource requirements</li>
-              <li>Stress-test: what happens if one member leaves? If revenue drops?</li>
-              <li>Draft federation participation intent (or standalone decision)</li>
-            </ul>
-          </div>
-        </div>
-        <div class="pilot-month reveal" data-delay="160">
-          <div class="pilot-month-header">
-            <p class="m-label">Month 3</p>
-            <h3>Genesis & First Cycle</h3>
-          </div>
-          <div class="pilot-month-body">
-            <p>Stand up the OS. Run the genesis process. Complete and document the first live cycle.</p>
-            <ul>
-              <li>Install the OS and run the node formation wizard</li>
-              <li>Sign the charter — all members, witnessed</li>
-              <li>Generate node cryptographic identity</li>
-              <li>Run the first Opening Council</li>
-              <li>Execute the first 30-day cycle fully</li>
-              <li>Submit the first cycle record to the pilot federation</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PARTICIPATION PATHWAYS -->
-  <section class="section section--dark">
-    <div class="container">
-      <p class="section-label reveal">Your Entry Point</p>
-      <h2 class="section-title reveal">Choose your pathway.</h2>
-      <p class="section-sub reveal">
-        Not everyone comes to this the same way. Select the path that most
-        closely matches where you are and what you want to contribute.
-      </p>
-
-      <div class="pathway-tabs reveal">
-        <button class="pathway-tab active" onclick="showPathway('observer')">Observer</button>
-        <button class="pathway-tab" onclick="showPathway('member')">Node Member</button>
-        <button class="pathway-tab" onclick="showPathway('founder')">Node Founder</button>
-        <button class="pathway-tab" onclick="showPathway('builder')">OS Builder</button>
-        <button class="pathway-tab" onclick="showPathway('federation')">Federation Architect</button>
-      </div>
-
-      <!-- OBSERVER -->
-      <div id="pathway-observer" class="pathway-panel active">
-        <div class="pathway-content">
+    <!-- PROPOSAL STAGE EXPLAINER -->
+    <section class="section">
+      <div class="container">
+        <div class="proposal-banner reveal">
+          <div class="proposal-banner-icon">◎</div>
           <div>
-            <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 1 of 5</span>
-            <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The Observer</h3>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              You're intrigued by the concept but not ready to commit. You want to understand
-              it deeply before deciding if it's for you. This is the most common entry point
-              — and a legitimate one. Premature commitment to something you don't fully
-              understand is how communities fail.
+            <h3>What "Proposal Stage" Means</h3>
+            <p>
+              Mastermind City currently exists as a detailed specification — a thorough working-out
+              of the concept, its mechanics, and its technical architecture. The OS does not yet
+              exist as downloadable software. No federation is yet live. This is deliberate.
             </p>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              The Observer pathway gives you structured ways to learn, ask questions, and
-              watch pilot nodes in action — without any obligation to join or build.
+            <p style="margin-top:0.8rem;">
+              The proposal stage is where the design is stress-tested, the pilot community is
+              identified, and the founding infrastructure decisions are made. The people who
+              participate now are not users of a finished product — they are co-designers of it.
+              Their input directly shapes what gets built, in what order, and for whom.
             </p>
-            <div class="callout callout-green">
-              <strong style="color:var(--green)">Your contribution at this stage:</strong> Feedback.
-              The most useful thing an Observer can do is ask hard questions. What's unclear?
-              What seems naive? What have we not thought through? That skepticism is genuinely
-              valuable design input.
+            <p style="margin-top:0.8rem;">
+              The 90-Day Pilot Framework below is the specific path from proposal to first
+              live node. If you're serious about building or joining a pilot node, that's
+              the onboarding map.
+            </p>
+          </div>
+        </div>
+
+        <!-- 90-DAY PILOT FRAMEWORK -->
+        <p class="section-label reveal">From Proposal to Reality</p>
+        <h2 class="section-title reveal">The 90-Day Pilot Framework.</h2>
+        <p class="section-sub reveal">
+          The pilot framework takes a group of committed people from first conversation
+          to a live, operating node with a signed charter, assigned roles, and a
+          functioning OS instance — in three months.
+        </p>
+        <div class="pilot-grid">
+          <div class="pilot-month reveal">
+            <div class="pilot-month-header">
+              <p class="m-label">Month 1</p>
+              <h3>Orientation & Alignment</h3>
+            </div>
+            <div class="pilot-month-body">
+              <p>Ground everyone in the concepts. Identify who genuinely wants to build together. Surface assumptions
+                and differences early.</p>
+              <ul>
+                <li>Work through the core documents as a group</li>
+                <li>Each person writes a one-page vision of what they want to build</li>
+                <li>Map the group's skills, resources, and constraints honestly</li>
+                <li>Identify which node type best fits the group's intent</li>
+                <li>Surface and name any major concerns or blockers</li>
+                <li>End with a decision: continue to Month 2, or part ways respectfully</li>
+              </ul>
             </div>
           </div>
-          <div class="journey-track">
-            <div class="journey-step active-step">
-              <p class="journey-step-label">Now</p>
-              <h4>Read the full spec</h4>
-              <p>Work through all the core documents. Take notes on what's unclear or unconvincing.</p>
+          <div class="pilot-month reveal" data-delay="80">
+            <div class="pilot-month-header">
+              <p class="m-label">Month 2</p>
+              <h3>Design & Stress-Test</h3>
             </div>
-            <div class="journey-step active-step">
-              <p class="journey-step-label">Next</p>
-              <h4>Submit feedback</h4>
-              <p>Use the form below to share your questions, objections, or ideas. Everything gets read and considered.</p>
+            <div class="pilot-month-body">
+              <p>Design the specific node. Stress-test the assumptions. Make the model concrete enough to commit to.</p>
+              <ul>
+                <li>Draft the node's charter and purpose statement</li>
+                <li>Assign provisional roles — live with them for a month</li>
+                <li>Simulate a full 30-day cycle on paper before running one live</li>
+                <li>Identify the node's economic model and resource requirements</li>
+                <li>Stress-test: what happens if one member leaves? If revenue drops?</li>
+                <li>Draft federation participation intent (or standalone decision)</li>
+              </ul>
             </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Optional</p>
-              <h4>Join the observer network</h4>
-              <p>Receive updates on pilot node formation, OS development milestones, and open calls for input.</p>
+          </div>
+          <div class="pilot-month reveal" data-delay="160">
+            <div class="pilot-month-header">
+              <p class="m-label">Month 3</p>
+              <h3>Genesis & First Cycle</h3>
             </div>
-            <div class="journey-step">
-              <p class="journey-step-label">If ready</p>
-              <h4>Upgrade to Member or Founder</h4>
-              <p>When you're ready to commit, there are clear pathways forward. No pressure timeline.</p>
+            <div class="pilot-month-body">
+              <p>Stand up the OS. Run the genesis process. Complete and document the first live cycle.</p>
+              <ul>
+                <li>Install the OS and run the node formation wizard</li>
+                <li>Sign the charter — all members, witnessed</li>
+                <li>Generate node cryptographic identity</li>
+                <li>Run the first Opening Council</li>
+                <li>Execute the first 30-day cycle fully</li>
+                <li>Submit the first cycle record to the pilot federation</li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- NODE MEMBER -->
-      <div id="pathway-member" class="pathway-panel">
-        <div class="pathway-content">
+    <!-- PARTICIPATION PATHWAYS -->
+    <section class="section section--dark">
+      <div class="container">
+        <p class="section-label reveal">Your Entry Point</p>
+        <h2 class="section-title reveal">Choose your pathway.</h2>
+        <p class="section-sub reveal">
+          Not everyone comes to this the same way. Select the path that most
+          closely matches where you are and what you want to contribute.
+        </p>
+
+        <div class="pathway-tabs reveal">
+          <button class="pathway-tab active" onclick="showPathway('observer')">Observer</button>
+          <button class="pathway-tab" onclick="showPathway('member')">Node Member</button>
+          <button class="pathway-tab" onclick="showPathway('founder')">Node Founder</button>
+          <button class="pathway-tab" onclick="showPathway('builder')">OS Builder</button>
+          <button class="pathway-tab" onclick="showPathway('federation')">Federation Architect</button>
+        </div>
+
+        <!-- OBSERVER -->
+        <div id="pathway-observer" class="pathway-panel active">
+          <div class="pathway-content">
+            <div>
+              <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 1 of 5</span>
+              <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The Observer</h3>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                You're intrigued by the concept but not ready to commit. You want to understand
+                it deeply before deciding if it's for you. This is the most common entry point
+                — and a legitimate one. Premature commitment to something you don't fully
+                understand is how communities fail.
+              </p>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                The Observer pathway gives you structured ways to learn, ask questions, and
+                watch pilot nodes in action — without any obligation to join or build.
+              </p>
+              <div class="callout callout-green">
+                <strong style="color:var(--green)">Your contribution at this stage:</strong> Feedback.
+                The most useful thing an Observer can do is ask hard questions. What's unclear?
+                What seems naive? What have we not thought through? That skepticism is genuinely
+                valuable design input.
+              </div>
+            </div>
+            <div class="journey-track">
+              <div class="journey-step active-step">
+                <p class="journey-step-label">Now</p>
+                <h4>Read the full spec</h4>
+                <p>Work through all the core documents. Take notes on what's unclear or unconvincing.</p>
+              </div>
+              <div class="journey-step active-step">
+                <p class="journey-step-label">Next</p>
+                <h4>Submit feedback</h4>
+                <p>Use the form below to share your questions, objections, or ideas. Everything gets read and
+                  considered.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Optional</p>
+                <h4>Join the observer network</h4>
+                <p>Receive updates on pilot node formation, OS development milestones, and open calls for input.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">If ready</p>
+                <h4>Upgrade to Member or Founder</h4>
+                <p>When you're ready to commit, there are clear pathways forward. No pressure timeline.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NODE MEMBER -->
+        <div id="pathway-member" class="pathway-panel">
+          <div class="pathway-content">
+            <div>
+              <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 2 of 5</span>
+              <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The Node Member</h3>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                You want to <em>be part of</em> a node — contributing, participating in the cycle,
+                holding a role — but you're not looking to be the person who founds it. You're
+                a builder, a maker, a craftsperson, or a community member who functions best
+                as part of an already-forming group.
+              </p>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                Node Members are the majority of any healthy community. The OS is designed for
+                people who don't want to think about governance — just show up, contribute,
+                and trust the structure to handle the coordination.
+              </p>
+              <div class="callout">
+                <strong class="text-gold">What you commit to:</strong> Show up to the monthly council.
+                Do your work. Signal when something isn't working. Rotate into every role over time.
+                That's genuinely the whole commitment at the member level.
+              </div>
+            </div>
+            <div class="journey-track">
+              <div class="journey-step active-step">
+                <p class="journey-step-label">Step 1</p>
+                <h4>Understand the role structure</h4>
+                <p>Read the How It Works and Charter pages. Know what every role involves before joining a node.</p>
+              </div>
+              <div class="journey-step active-step">
+                <p class="journey-step-label">Step 2</p>
+                <h4>Express your interest</h4>
+                <p>Use the form below to tell us what kind of node you want to be part of, and what you bring.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Step 3</p>
+                <h4>Match to a forming node</h4>
+                <p>We'll connect you with Founders who are forming nodes that match your node type preference and skill
+                  set.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Step 4</p>
+                <h4>Month 1: Orientation</h4>
+                <p>Join the node's Month 1 orientation. This is a mutual evaluation — you're assessing them as much as
+                  they're assessing you.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Step 5</p>
+                <h4>Charter Signing</h4>
+                <p>If Month 1 produces genuine alignment, sign the charter. You're a founding member of a live node.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NODE FOUNDER -->
+        <div id="pathway-founder" class="pathway-panel">
+          <div class="pathway-content">
+            <div>
+              <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 3 of 5</span>
+              <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The Node Founder</h3>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                You have a vision for a specific community — a place, a practice, a business,
+                or a project — and you want to use the Mastermind City OS as its organizational
+                backbone. You're not just joining something; you're building it.
+              </p>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                Node Founders go through the full 90-Day Pilot Framework. This is the most
+                demanding pathway, but also the most generative. Founders who go through this
+                process produce the documentation and patterns that improve the OS for everyone
+                who comes after them.
+              </p>
+              <div class="callout">
+                <strong class="text-gold">Your first task:</strong> You need at least three other
+                people before Month 1 begins. The minimum viable node is four people. Spending
+                time finding the right three before committing to the framework is time well spent.
+              </div>
+            </div>
+            <div class="journey-track">
+              <div class="journey-step active-step">
+                <p class="journey-step-label">Before you start</p>
+                <h4>Find your core three</h4>
+                <p>Identify three people who understand the concept and are genuinely interested in building together.
+                  Quality matters far more than speed here.</p>
+              </div>
+              <div class="journey-step active-step">
+                <p class="journey-step-label">Month 1</p>
+                <h4>Orientation & Alignment</h4>
+                <p>Full group works through the spec, surfaces their individual visions, identifies node type, maps
+                  constraints.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Month 2</p>
+                <h4>Design & Stress-Test</h4>
+                <p>Draft the charter, simulate a cycle, stress-test the model, decide on federation participation.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Month 3</p>
+                <h4>Genesis</h4>
+                <p>Install the OS, sign the charter, generate node identity, run the first live cycle.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Ongoing</p>
+                <h4>Pilot feedback loop</h4>
+                <p>Pilot nodes submit structured feedback to the OS development team after every cycle. You're
+                  co-building the system in real time.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- OS BUILDER -->
+        <div id="pathway-builder" class="pathway-panel">
+          <div class="pathway-content">
+            <div>
+              <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 4 of 5</span>
+              <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The OS Builder</h3>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                You're a developer, designer, or technical architect who wants to help build
+                the actual software. The OS needs to exist as real, working code — a downloadable
+                Tauri application, a suite of smart contracts, a P2P communication layer.
+              </p>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                This is open-source work with a genuine philosophical mission. The codebase
+                will be public. Contributions are attributed on-chain. The software should
+                be as well-crafted as the idea it serves.
+              </p>
+              <div class="callout">
+                <strong class="text-gold">Current stack priority:</strong> Rust (Tauri + libp2p),
+                Solidity (Base L2), IPFS integration, and frontend (Astro/HTML). Smart contract
+                security auditing skills are particularly valuable at this stage.
+              </div>
+              <div style="margin-top:2rem;">
+                <a href="mastermind-city-os-whitepaper.pdf" class="btn btn-secondary" target="_blank"
+                  rel="noopener noreferrer" download>OS Concept Whitepaper ↓</a>
+              </div>
+            </div>
+            <div class="journey-track">
+              <div class="journey-step active-step">
+                <p class="journey-step-label">Now</p>
+                <h4>Read the technical spec</h4>
+                <p>The DAO & Records and Technology pages describe the full architecture. Form a view on what you'd
+                  approach differently.</p>
+              </div>
+              <div class="journey-step active-step">
+                <p class="journey-step-label">Next</p>
+                <h4>Engage on GitHub</h4>
+                <p>The repo is live. Open issues, propose architecture decisions, or contribute to the spec documents
+                  directly.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Phase 1</p>
+                <h4>Node OS core</h4>
+                <p>The first build target: a working Tauri app that handles the cycle, roles, decisions, and
+                  contribution ledger. Offline-first.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Phase 2</p>
+                <h4>Smart contracts</h4>
+                <p>Node registry, contribution proof anchoring, and the treasury contract on Base. Auditability is a
+                  design requirement, not an afterthought.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FEDERATION ARCHITECT -->
+        <div id="pathway-federation" class="pathway-panel">
+          <div class="pathway-content">
+            <div>
+              <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 5 of 5</span>
+              <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The Federation Architect</h3>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                You have expertise in legal structures, cooperative finance, DAO governance,
+                or distributed organization design. You want to help design the federation
+                layer — the rules, the treasury mechanics, the inter-node protocols, and
+                the legal wrappers that make the network durable and defensible.
+              </p>
+              <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+                This work is upstream of the first nodes. The federation layer needs to be
+                designed before it's needed — because retrofitting governance onto a running
+                network is far harder than designing it correctly from the start.
+              </p>
+              <div class="callout">
+                <strong class="text-gold">Key open questions:</strong> What legal entity wraps
+                the federation DAO? How are token emissions designed to reward contribution
+                without speculation? What's the minimum treasury threshold before distributions
+                begin? What's the dispute resolution mechanism for inter-node conflicts?
+              </div>
+            </div>
+            <div class="journey-track">
+              <div class="journey-step active-step">
+                <p class="journey-step-label">First</p>
+                <h4>Engage on the DAO design</h4>
+                <p>The Blockchain & DAO page presents the current architecture. It's a starting point, not a finished
+                  design. Your critique is valuable.</p>
+              </div>
+              <div class="journey-step active-step">
+                <p class="journey-step-label">Next</p>
+                <h4>Legal wrapper design</h4>
+                <p>The federation needs a legal entity in at least one jurisdiction. Wyoming DAO LLC, Swiss foundation,
+                  or a Marshall Islands structure are the leading candidates.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Phase 2</p>
+                <h4>Treasury mechanics</h4>
+                <p>Design the contribution weighting formula, the distribution schedule, and the capital access criteria
+                  that make federation membership materially valuable.</p>
+              </div>
+              <div class="journey-step">
+                <p class="journey-step-label">Phase 3</p>
+                <h4>Inter-node protocols</h4>
+                <p>Labor exchange, capital sharing, dispute resolution, and the node admission standards that maintain
+                  the quality of the network without gatekeeping its character.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- EXPRESSION OF INTEREST FORM -->
+    <section class="section">
+      <div class="container">
+        <div class="grid-2" style="gap:5rem; align-items:start;">
           <div>
-            <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 2 of 5</span>
-            <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The Node Member</h3>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              You want to <em>be part of</em> a node — contributing, participating in the cycle,
-              holding a role — but you're not looking to be the person who founds it. You're
-              a builder, a maker, a craftsperson, or a community member who functions best
-              as part of an already-forming group.
+            <p class="section-label reveal">Get In Touch</p>
+            <h2 class="section-title reveal">Express your interest.</h2>
+            <p style="color:var(--text-dim); margin-bottom:1.5rem;" class="reveal">
+              This form is not an application. There's nothing to be accepted into yet.
+              It's a way of putting yourself on the map — letting us know who you are,
+              what you're interested in building, and how you might fit into the
+              emerging network.
             </p>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              Node Members are the majority of any healthy community. The OS is designed for
-              people who don't want to think about governance — just show up, contribute,
-              and trust the structure to handle the coordination.
+            <p style="color:var(--text-dim);" class="reveal">
+              Everyone who submits gets a personal response. Not a form email.
+              If what you're describing is something we think could work,
+              we'll start a real conversation.
             </p>
-            <div class="callout">
-              <strong class="text-gold">What you commit to:</strong> Show up to the monthly council.
-              Do your work. Signal when something isn't working. Rotate into every role over time.
-              That's genuinely the whole commitment at the member level.
+            <div class="callout callout-green mt-2 reveal">
+              <strong style="color:var(--green)">Current priority:</strong> We are actively
+              looking for the first three to five pilot node Founders — people with a specific
+              vision, an existing community or proto-community, and the willingness to
+              stress-test this framework in the real world.
             </div>
           </div>
-          <div class="journey-track">
-            <div class="journey-step active-step">
-              <p class="journey-step-label">Step 1</p>
-              <h4>Understand the role structure</h4>
-              <p>Read the How It Works and Charter pages. Know what every role involves before joining a node.</p>
-            </div>
-            <div class="journey-step active-step">
-              <p class="journey-step-label">Step 2</p>
-              <h4>Express your interest</h4>
-              <p>Use the form below to tell us what kind of node you want to be part of, and what you bring.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Step 3</p>
-              <h4>Match to a forming node</h4>
-              <p>We'll connect you with Founders who are forming nodes that match your node type preference and skill set.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Step 4</p>
-              <h4>Month 1: Orientation</h4>
-              <p>Join the node's Month 1 orientation. This is a mutual evaluation — you're assessing them as much as they're assessing you.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Step 5</p>
-              <h4>Charter Signing</h4>
-              <p>If Month 1 produces genuine alignment, sign the charter. You're a founding member of a live node.</p>
+          <div class="reveal">
+            <div class="interest-form">
+              <div class="form-field">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" placeholder="How you'd like to be addressed" />
+              </div>
+              <div class="form-field">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="For our response" />
+              </div>
+              <div class="form-field">
+                <label for="pathway">Your Pathway</label>
+                <select id="pathway">
+                  <option value="">Select a pathway…</option>
+                  <option value="observer">Observer — I want to learn more</option>
+                  <option value="member">Node Member — I want to join a node</option>
+                  <option value="founder">Node Founder — I want to build a node</option>
+                  <option value="builder">OS Builder — I want to build the software</option>
+                  <option value="federation">Federation Architect — I want to design the infrastructure</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="node-type">Node Type Interest</label>
+                <select id="node-type">
+                  <option value="">What kind of community? (optional)</option>
+                  <option value="homestead">Homestead — land, food, family</option>
+                  <option value="studio">Studio — creation, media, art</option>
+                  <option value="guild">Guild — craft, trade, apprenticeship</option>
+                  <option value="monastery">Monastery — practice, contemplation</option>
+                  <option value="lab">Lab — research, experiment</option>
+                  <option value="agora">Agora — education, community service</option>
+                  <option value="enterprise">Enterprise — business collective</option>
+                  <option value="other">Other / Undefined</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label for="message">What you're building, thinking about, or curious about</label>
+                <textarea id="message" rows="5"
+                  placeholder="No need to be polished. What's the actual thing you're trying to build or solve?"></textarea>
+              </div>
+              <button class="btn btn-primary" style="width:100%;" onclick="handleSubmit()">Send Expression of
+                Interest</button>
+              <p
+                style="font-family:var(--mono); font-size:0.62rem; color:var(--text-faint); text-align:center; margin-top:1rem; letter-spacing:0.06em;">
+                No spam. No list. Personal response only.</p>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- NODE FOUNDER -->
-      <div id="pathway-founder" class="pathway-panel">
-        <div class="pathway-content">
-          <div>
-            <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 3 of 5</span>
-            <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The Node Founder</h3>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              You have a vision for a specific community — a place, a practice, a business,
-              or a project — and you want to use the Mastermind City OS as its organizational
-              backbone. You're not just joining something; you're building it.
-            </p>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              Node Founders go through the full 90-Day Pilot Framework. This is the most
-              demanding pathway, but also the most generative. Founders who go through this
-              process produce the documentation and patterns that improve the OS for everyone
-              who comes after them.
-            </p>
-            <div class="callout">
-              <strong class="text-gold">Your first task:</strong> You need at least three other
-              people before Month 1 begins. The minimum viable node is four people. Spending
-              time finding the right three before committing to the framework is time well spent.
-            </div>
-          </div>
-          <div class="journey-track">
-            <div class="journey-step active-step">
-              <p class="journey-step-label">Before you start</p>
-              <h4>Find your core three</h4>
-              <p>Identify three people who understand the concept and are genuinely interested in building together. Quality matters far more than speed here.</p>
-            </div>
-            <div class="journey-step active-step">
-              <p class="journey-step-label">Month 1</p>
-              <h4>Orientation & Alignment</h4>
-              <p>Full group works through the spec, surfaces their individual visions, identifies node type, maps constraints.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Month 2</p>
-              <h4>Design & Stress-Test</h4>
-              <p>Draft the charter, simulate a cycle, stress-test the model, decide on federation participation.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Month 3</p>
-              <h4>Genesis</h4>
-              <p>Install the OS, sign the charter, generate node identity, run the first live cycle.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Ongoing</p>
-              <h4>Pilot feedback loop</h4>
-              <p>Pilot nodes submit structured feedback to the OS development team after every cycle. You're co-building the system in real time.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  </main>
 
-      <!-- OS BUILDER -->
-      <div id="pathway-builder" class="pathway-panel">
-        <div class="pathway-content">
-          <div>
-            <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 4 of 5</span>
-            <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The OS Builder</h3>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              You're a developer, designer, or technical architect who wants to help build
-              the actual software. The OS needs to exist as real, working code — a downloadable
-              Tauri application, a suite of smart contracts, a P2P communication layer.
-            </p>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              This is open-source work with a genuine philosophical mission. The codebase
-              will be public. Contributions are attributed on-chain. The software should
-              be as well-crafted as the idea it serves.
-            </p>
-            <div class="callout">
-              <strong class="text-gold">Current stack priority:</strong> Rust (Tauri + libp2p),
-              Solidity (Base L2), IPFS integration, and frontend (Astro/HTML). Smart contract
-              security auditing skills are particularly valuable at this stage.
-            </div>
-          </div>
-          <div class="journey-track">
-            <div class="journey-step active-step">
-              <p class="journey-step-label">Now</p>
-              <h4>Read the technical spec</h4>
-              <p>The DAO & Records and Technology pages describe the full architecture. Form a view on what you'd approach differently.</p>
-            </div>
-            <div class="journey-step active-step">
-              <p class="journey-step-label">Next</p>
-              <h4>Engage on GitHub</h4>
-              <p>The repo is live. Open issues, propose architecture decisions, or contribute to the spec documents directly.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Phase 1</p>
-              <h4>Node OS core</h4>
-              <p>The first build target: a working Tauri app that handles the cycle, roles, decisions, and contribution ledger. Offline-first.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Phase 2</p>
-              <h4>Smart contracts</h4>
-              <p>Node registry, contribution proof anchoring, and the treasury contract on Base. Auditability is a design requirement, not an afterthought.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <footer>
+    <span class="footer-logo">Mastermind<span style="color:var(--gold)">City</span></span>
+    <ul class="footer-links">
+      <li><a href="index.html">Vision</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="blockchain-dao.html">DAO & Records</a></li>
+      <li><a href="participate.html">Participate</a></li>
+    </ul>
+    <span class="footer-copy">A proposal for resilient, opt-in cooperative civilization.</span>
+  </footer>
 
-      <!-- FEDERATION ARCHITECT -->
-      <div id="pathway-federation" class="pathway-panel">
-        <div class="pathway-content">
-          <div>
-            <span class="tag tag-gold" style="margin-bottom:1rem; display:inline-block;">Pathway 5 of 5</span>
-            <h3 style="font-size:1.8rem; margin-bottom:0.8rem;">The Federation Architect</h3>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              You have expertise in legal structures, cooperative finance, DAO governance,
-              or distributed organization design. You want to help design the federation
-              layer — the rules, the treasury mechanics, the inter-node protocols, and
-              the legal wrappers that make the network durable and defensible.
-            </p>
-            <p style="color:var(--text-dim); margin-bottom:1.5rem;">
-              This work is upstream of the first nodes. The federation layer needs to be
-              designed before it's needed — because retrofitting governance onto a running
-              network is far harder than designing it correctly from the start.
-            </p>
-            <div class="callout">
-              <strong class="text-gold">Key open questions:</strong> What legal entity wraps
-              the federation DAO? How are token emissions designed to reward contribution
-              without speculation? What's the minimum treasury threshold before distributions
-              begin? What's the dispute resolution mechanism for inter-node conflicts?
-            </div>
-          </div>
-          <div class="journey-track">
-            <div class="journey-step active-step">
-              <p class="journey-step-label">First</p>
-              <h4>Engage on the DAO design</h4>
-              <p>The Blockchain & DAO page presents the current architecture. It's a starting point, not a finished design. Your critique is valuable.</p>
-            </div>
-            <div class="journey-step active-step">
-              <p class="journey-step-label">Next</p>
-              <h4>Legal wrapper design</h4>
-              <p>The federation needs a legal entity in at least one jurisdiction. Wyoming DAO LLC, Swiss foundation, or a Marshall Islands structure are the leading candidates.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Phase 2</p>
-              <h4>Treasury mechanics</h4>
-              <p>Design the contribution weighting formula, the distribution schedule, and the capital access criteria that make federation membership materially valuable.</p>
-            </div>
-            <div class="journey-step">
-              <p class="journey-step-label">Phase 3</p>
-              <h4>Inter-node protocols</h4>
-              <p>Labor exchange, capital sharing, dispute resolution, and the node admission standards that maintain the quality of the network without gatekeeping its character.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <script src="script.js"></script>
+  <script>
+    function showPathway(name) {
+      document.querySelectorAll('.pathway-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.pathway-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('pathway-' + name).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
 
-    </div>
-  </section>
-
-  <!-- EXPRESSION OF INTEREST FORM -->
-  <section class="section">
-    <div class="container">
-      <div class="grid-2" style="gap:5rem; align-items:start;">
-        <div>
-          <p class="section-label reveal">Get In Touch</p>
-          <h2 class="section-title reveal">Express your interest.</h2>
-          <p style="color:var(--text-dim); margin-bottom:1.5rem;" class="reveal">
-            This form is not an application. There's nothing to be accepted into yet.
-            It's a way of putting yourself on the map — letting us know who you are,
-            what you're interested in building, and how you might fit into the
-            emerging network.
-          </p>
-          <p style="color:var(--text-dim);" class="reveal">
-            Everyone who submits gets a personal response. Not a form email.
-            If what you're describing is something we think could work,
-            we'll start a real conversation.
-          </p>
-          <div class="callout callout-green mt-2 reveal">
-            <strong style="color:var(--green)">Current priority:</strong> We are actively
-            looking for the first three to five pilot node Founders — people with a specific
-            vision, an existing community or proto-community, and the willingness to
-            stress-test this framework in the real world.
-          </div>
-        </div>
-        <div class="reveal">
-          <div class="interest-form">
-            <div class="form-field">
-              <label for="name">Your Name</label>
-              <input type="text" id="name" placeholder="How you'd like to be addressed" />
-            </div>
-            <div class="form-field">
-              <label for="email">Email</label>
-              <input type="email" id="email" placeholder="For our response" />
-            </div>
-            <div class="form-field">
-              <label for="pathway">Your Pathway</label>
-              <select id="pathway">
-                <option value="">Select a pathway…</option>
-                <option value="observer">Observer — I want to learn more</option>
-                <option value="member">Node Member — I want to join a node</option>
-                <option value="founder">Node Founder — I want to build a node</option>
-                <option value="builder">OS Builder — I want to build the software</option>
-                <option value="federation">Federation Architect — I want to design the infrastructure</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="node-type">Node Type Interest</label>
-              <select id="node-type">
-                <option value="">What kind of community? (optional)</option>
-                <option value="homestead">Homestead — land, food, family</option>
-                <option value="studio">Studio — creation, media, art</option>
-                <option value="guild">Guild — craft, trade, apprenticeship</option>
-                <option value="monastery">Monastery — practice, contemplation</option>
-                <option value="lab">Lab — research, experiment</option>
-                <option value="agora">Agora — education, community service</option>
-                <option value="enterprise">Enterprise — business collective</option>
-                <option value="other">Other / Undefined</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="message">What you're building, thinking about, or curious about</label>
-              <textarea id="message" rows="5" placeholder="No need to be polished. What's the actual thing you're trying to build or solve?"></textarea>
-            </div>
-            <button class="btn btn-primary" style="width:100%;" onclick="handleSubmit()">Send Expression of Interest</button>
-            <p style="font-family:var(--mono); font-size:0.62rem; color:var(--text-faint); text-align:center; margin-top:1rem; letter-spacing:0.06em;">No spam. No list. Personal response only.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<footer>
-  <span class="footer-logo">Mastermind<span style="color:var(--gold)">City</span></span>
-  <ul class="footer-links">
-    <li><a href="index.html">Vision</a></li>
-    <li><a href="how-it-works.html">How It Works</a></li>
-    <li><a href="blockchain-dao.html">DAO & Records</a></li>
-    <li><a href="participate.html">Participate</a></li>
-  </ul>
-  <span class="footer-copy">A proposal for resilient, opt-in cooperative civilization.</span>
-</footer>
-
-<script src="script.js"></script>
-<script>
-  function showPathway(name) {
-    document.querySelectorAll('.pathway-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.pathway-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('pathway-' + name).classList.add('active');
-    event.currentTarget.classList.add('active');
-  }
-
-  function handleSubmit() {
-    const btn = event.currentTarget;
-    btn.textContent = 'Received — we\'ll be in touch.';
-    btn.style.background = 'var(--green)';
-    btn.disabled = true;
-  }
-</script>
+    function handleSubmit() {
+      const btn = event.currentTarget;
+      btn.textContent = 'Received — we\'ll be in touch.';
+      btn.style.background = 'var(--green)';
+      btn.disabled = true;
+    }
+  </script>
 </body>
+
 </html>
