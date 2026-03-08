@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blockchain & DAO Architecture — Mastermind City</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* flow diagram */
+    .flow-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      padding-left: 2.5rem;
+    }
+    .flow-diagram::before {
+      content: '';
+      position: absolute;
+      left: 10px; top: 1rem; bottom: 1rem;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), var(--green), var(--border));
+    }
+    .flow-node {
+      position: relative;
+      padding: 1.8rem 0 1.8rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .flow-node:last-child { border-bottom: none; }
+    .flow-node::before {
+      content: '';
+      position: absolute;
+      left: -2.5rem; top: 2.1rem;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--bg);
+      z-index: 1;
+    }
+    .flow-node.green::before { background: var(--green); }
+    .flow-node.dim::before   { background: var(--border2); }
+    .flow-node-label {
+      font-family: var(--mono);
+      font-size: 0.66rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .flow-node.green .flow-node-label { color: var(--green); }
+    .flow-node h3 { margin-bottom: 0.5rem; }
+    .flow-node p  { color: var(--text-dim); font-size: 0.95rem; max-width: 58ch; }
+
+    /* record anatomy */
+    .record-block {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      line-height: 1.8;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold);
+      border-radius: var(--radius);
+      padding: 1.8rem 2rem;
+      color: var(--text-dim);
+      overflow-x: auto;
+    }
+    .record-block .key   { color: var(--gold); }
+    .record-block .value { color: var(--green); }
+    .record-block .hash  { color: #6a8ab0; }
+    .record-block .comment { color: var(--text-faint); }
+
+    /* treasury flow */
+    .treasury-grid {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      margin: 2rem 0;
+    }
+    .treasury-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .treasury-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem 1.2rem;
+      font-size: 0.9rem;
+    }
+    .treasury-item h4 {
+      font-size: 0.95rem;
+      margin-bottom: 0.2rem;
+    }
+    .treasury-item p {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+    }
+    .treasury-arrow {
+      text-align: center;
+      font-size: 1.5rem;
+      color: var(--text-faint);
+    }
+    .treasury-center {
+      background: rgba(201,168,76,0.06);
+      border: 1px solid var(--gold-dim);
+      border-radius: var(--radius);
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .treasury-center h3 {
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .treasury-center p {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+    }
+
+    /* comparison table */
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .comp-table th {
+      font-family: var(--mono);
+      font-size: 0.63rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      text-align: left;
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .comp-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-dim);
+      vertical-align: top;
+    }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-table tr:hover td { background: rgba(255,255,255,0.01); }
+    .comp-table .yes { color: var(--green); font-family: var(--mono); font-size: 0.8rem; }
+    .comp-table .no  { color: #c46060;      font-family: var(--mono); font-size: 0.8rem; }
+    .comp-table .tbd { color: var(--gold);   font-family: var(--mono); font-size: 0.8rem; }
+
+    /* phase roadmap */
+    .phase-track {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .phase-col {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .phase-header {
+      padding: 1.2rem 1.5rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .phase-header .phase-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-faint);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+    .phase-header h3 { font-size: 1.1rem; }
+    .phase-body {
+      padding: 1.2rem 1.5rem;
+    }
+    .phase-body ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .phase-body li {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      padding-left: 1rem;
+      position: relative;
+    }
+    .phase-body li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--text-faint);
+      font-family: var(--mono);
+    }
+    .phase-col.active .phase-header { background: rgba(201,168,76,0.07); border-color: var(--gold-dim); }
+    .phase-col.active { border-color: var(--gold-dim); }
+
+    @media (max-width: 768px) {
+      .treasury-grid { grid-template-columns: 1fr; }
+      .treasury-arrow { transform: rotate(90deg); }
+      .phase-track { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Mastermind<span>City</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Vision</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="node-types.html">Node Types</a></li>
+    <li><a href="model.html">Model</a></li>
+    <li><a href="charter.html">Charter</a></li>
+    <li><a href="blockchain-dao.html">DAO & Records</a></li>
+    <li><a href="participate.html">Participate</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" style="min-height:55vh;">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-content">
+      <p class="hero-label">Federation Infrastructure</p>
+      <h1>Immutable records.<br><em>Distributed trust.</em></h1>
+      <p class="hero-sub">
+        How blockchain, DAO governance, and cryptographic records
+        give the federation its memory, its treasury, and its ability
+        to operate without a central authority.
+      </p>
+    </div>
+  </section>
+
+  <!-- WHY BLOCKCHAIN -->
+  <section class="section">
+    <div class="container">
+      <div class="grid-2" style="gap:5rem; align-items:start;">
+        <div>
+          <p class="section-label reveal">The Problem It Solves</p>
+          <h2 class="section-title reveal">Federations fail when trust becomes personal.</h2>
+          <p style="color:var(--text-dim); margin-bottom:1.2rem;" class="reveal">
+            Every voluntary federation in history eventually faces the same vulnerability:
+            the records, the treasury, and the rules live somewhere controlled by
+            specific people. When those people leave, die, or defect, the federation
+            loses its memory and its money.
+          </p>
+          <p style="color:var(--text-dim); margin-bottom:1.2rem;" class="reveal">
+            Blockchain infrastructure moves the federation's critical state — records,
+            contribution proofs, treasury rules, governance decisions — out of any
+            individual's control and into a shared, cryptographically verifiable system
+            that no single party can alter or destroy.
+          </p>
+          <p style="color:var(--text-dim);" class="reveal">
+            This is not "Web3 for its own sake." It is a specific answer to a specific
+            structural problem: how do decentralized nodes trust each other, share
+            resources, and maintain records across time — without appointing a custodian?
+          </p>
+          <div class="callout mt-2 reveal">
+            <strong class="text-gold">Key distinction:</strong> The blockchain is the
+            federation layer's infrastructure, not the node's. Individual nodes run
+            locally and offline. The chain is only consulted for inter-node
+            interactions — contributions, treasury, governance, and permanent records.
+          </div>
+        </div>
+        <div class="reveal">
+          <p style="font-family:var(--mono); font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-faint); margin-bottom:1.2rem;">What the chain holds</p>
+          <ul class="step-list">
+            <li>
+              <span class="step-num">◈</span>
+              <div class="step-content">
+                <h4>Node Identity</h4>
+                <p>Each node's cryptographic keypair, registered on-chain. Verifiable without a central registry.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">◈</span>
+              <div class="step-content">
+                <h4>Contribution Proofs</h4>
+                <p>Hashes of cycle records and contribution ledgers. Not the content — the proof that a specific record exists and hasn't been altered.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">◈</span>
+              <div class="step-content">
+                <h4>Treasury Rules</h4>
+                <p>Smart contracts that govern how federation funds are held, allocated, and distributed. Rules that execute automatically when conditions are met.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">◈</span>
+              <div class="step-content">
+                <h4>Governance Decisions</h4>
+                <p>Federation-level votes — changes to the base charter, admission of new nodes, amendments to treasury rules — recorded immutably.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">◈</span>
+              <div class="step-content">
+                <h4>Exit Records</h4>
+                <p>Node exits, membership changes, and dissolution records. A permanent audit trail that protects all parties.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECORD FLOW -->
+  <section class="section section--dark">
+    <div class="container">
+      <p class="section-label reveal">How Records Work</p>
+      <h2 class="section-title reveal">The OS ingests decisions. The chain makes them permanent.</h2>
+      <p class="section-sub reveal">
+        Every formal decision, role rotation, cycle completion, and contribution log
+        produced inside a node is captured by the OS. At the end of each cycle, a
+        cryptographic fingerprint of that record is anchored to the federation chain.
+        The content stays local. The proof goes everywhere.
+      </p>
+
+      <div class="grid-2" style="gap:4rem; align-items:start;">
+        <div class="flow-diagram reveal">
+          <div class="flow-node">
+            <p class="flow-node-label">Step 1 — Live Capture</p>
+            <h3>Decision is made in a node meeting</h3>
+            <p>Any formal decision — a consent vote, a role assignment, a charter amendment, a contribution log entry — is recorded in the OS at the moment it happens. No manual transcription needed.</p>
+          </div>
+          <div class="flow-node green">
+            <p class="flow-node-label" style="color:var(--green);">Step 2 — Signed Locally</p>
+            <h3>Node keypair signs the record</h3>
+            <p>The OS generates a structured record document. The node's private key signs it. This proves the record originated from this node and hasn't been altered.</p>
+          </div>
+          <div class="flow-node">
+            <p class="flow-node-label">Step 3 — Stored in Distributed Layer</p>
+            <h3>Full record goes to IPFS or federated storage</h3>
+            <p>The complete record — the actual text of decisions, contribution tallies, role changes — is stored in a content-addressed distributed storage network. It lives in many places simultaneously.</p>
+          </div>
+          <div class="flow-node green">
+            <p class="flow-node-label" style="color:var(--green);">Step 4 — Hash Anchored On-Chain</p>
+            <h3>A fingerprint is written to the blockchain</h3>
+            <p>The content hash (a short cryptographic fingerprint) is written to the smart contract. Anyone can verify that a given document matches this hash. The record is now permanently provable.</p>
+          </div>
+          <div class="flow-node dim">
+            <p class="flow-node-label" style="color:var(--text-faint);">Step 5 — Retrievable Forever</p>
+            <h3>Even if the node is gone</h3>
+            <p>If a node's local hardware is destroyed, the records exist in distributed storage and can be retrieved by any authorized party using the on-chain reference. The federation is the memory that outlasts any individual node.</p>
+          </div>
+        </div>
+
+        <div class="reveal" style="margin-top:1rem;">
+          <p style="font-family:var(--mono); font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-faint); margin-bottom:1rem;">Example: a cycle close record</p>
+          <div class="record-block">
+<span class="comment">// Cycle Close Record — Node: CEDAR-7</span>
+<span class="comment">// Cycle 14 — Month of November</span>
+
+{
+  <span class="key">"node_id"</span>: <span class="value">"cedar7.mastermind.eth"</span>,
+  <span class="key">"cycle"</span>: <span class="value">14</span>,
+  <span class="key">"period"</span>: <span class="value">"2025-11"</span>,
+  <span class="key">"navigator"</span>: <span class="value">"member:0x4a2f..."</span>,
+  <span class="key">"roles"</span>: {
+    <span class="key">"navigator"</span>:   <span class="value">"member:0x4a2f"</span>,
+    <span class="key">"steward"</span>:     <span class="value">"member:0x91bc"</span>,
+    <span class="key">"chronicler"</span>:  <span class="value">"member:0x33d1"</span>,
+    <span class="key">"connector"</span>:   <span class="value">"member:0xf8a4"</span>,
+    <span class="key">"builder"</span>:     <span class="value">"member:0x2c77"</span>
+  },
+  <span class="key">"decisions"</span>: [
+    { <span class="key">"id"</span>: <span class="value">"d14-001"</span>, <span class="key">"type"</span>: <span class="value">"consent"</span>,
+      <span class="key">"summary"</span>: <span class="value">"Approved workshop expansion"</span>,
+      <span class="key">"result"</span>: <span class="value">"passed"</span>, <span class="key">"blocks"</span>: <span class="value">0</span> },
+    { <span class="key">"id"</span>: <span class="value">"d14-002"</span>, <span class="key">"type"</span>: <span class="value">"tension_resolved"</span>,
+      <span class="key">"summary"</span>: <span class="value">"Contribution dispute: member A/B"</span>,
+      <span class="key">"result"</span>: <span class="value">"resolved"</span> }
+  ],
+  <span class="key">"contribution_totals"</span>: {
+    <span class="key">"member:0x4a2f"</span>: <span class="value">48</span>,
+    <span class="key">"member:0x91bc"</span>: <span class="value">52</span>,
+    <span class="key">"member:0x33d1"</span>: <span class="value">38</span>,
+    <span class="key">"member:0xf8a4"</span>: <span class="value">41</span>,
+    <span class="key">"member:0x2c77"</span>: <span class="value">55</span>
+  },
+  <span class="key">"signed_by"</span>: <span class="value">"navigator:0x4a2f"</span>,
+  <span class="key">"ipfs_cid"</span>: <span class="hash">"bafybeig7xbr2k..."</span>,
+  <span class="key">"chain_tx"</span>:  <span class="hash">"0x9d3c4e..."</span>
+}
+          </div>
+          <p style="font-size:0.82rem; color:var(--text-faint); margin-top:0.8rem; font-family:var(--mono);">
+            The full record lives in IPFS. Only the hash and metadata go on-chain.
+            Privacy is preserved. Proof is permanent.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DAO STRUCTURE -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label reveal">The DAO</p>
+      <h2 class="section-title reveal">The federation is a DAO. Nodes are its members.</h2>
+      <p class="section-sub reveal">
+        A DAO (Decentralized Autonomous Organization) is an organization whose rules
+        are encoded in smart contracts — programs that execute automatically when
+        conditions are met, without needing a human administrator to approve each action.
+        The Mastermind City federation uses a DAO as its coordination layer.
+      </p>
+
+      <div class="callout reveal">
+        <strong class="text-gold">Important framing:</strong> The DAO does not govern nodes.
+        Nodes are sovereign. The DAO governs the <em>shared resources and rules</em> of the
+        federation — the treasury, the charter amendments, admission of new nodes, and the
+        infrastructure budget. Everything else belongs to the node.
+      </div>
+
+      <div class="grid-2 mt-3" style="gap:4rem;">
+        <div>
+          <h3 class="reveal" style="margin-bottom:1.5rem;">What the DAO governs</h3>
+          <ul class="step-list reveal">
+            <li>
+              <span class="step-num mono">01</span>
+              <div class="step-content">
+                <h4>Treasury Allocation</h4>
+                <p>How federation-level funds are held and distributed. Capital access programs, resilience buffers, infrastructure investment — all governed by smart contract rules that nodes vote on.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num mono">02</span>
+              <div class="step-content">
+                <h4>Node Admission</h4>
+                <p>New nodes requesting federation membership submit their charter and three cycles of records. Existing nodes vote on admission. Rules for minimum standards are encoded in the DAO.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num mono">03</span>
+              <div class="step-content">
+                <h4>Protocol Amendments</h4>
+                <p>Changes to the base OS protocol, the federation charter, or the treasury rules require a supermajority DAO vote. No single node can unilaterally change the shared standards.</p>
+              </div>
+            </li>
+            <li>
+              <span class="step-num mono">04</span>
+              <div class="step-content">
+                <h4>Infrastructure Budget</h4>
+                <p>Shared infrastructure — the record storage network, the communication layer, the OS development fund — is funded by the DAO treasury and budgeted by node vote.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="reveal" style="margin-bottom:1.5rem;">How voting weight is earned</h3>
+          <p style="color:var(--text-dim); margin-bottom:1.5rem;" class="reveal">
+            Voting weight in the federation DAO is not bought — it is earned through
+            verified contribution. This is the key design choice that separates
+            Mastermind City's DAO from speculative token governance.
+          </p>
+          <div class="card reveal">
+            <p style="font-family:var(--mono); font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-faint); margin-bottom:1rem;">Governance weight sources</p>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:0.8rem;">
+              <li style="display:flex; gap:1rem; align-items:start;">
+                <span class="tag tag-gold">+Weight</span>
+                <span style="font-size:0.9rem; color:var(--text-dim);">Completed cycle records submitted to federation</span>
+              </li>
+              <li style="display:flex; gap:1rem; align-items:start;">
+                <span class="tag tag-gold">+Weight</span>
+                <span style="font-size:0.9rem; color:var(--text-dim);">Verified contribution hours logged and signed</span>
+              </li>
+              <li style="display:flex; gap:1rem; align-items:start;">
+                <span class="tag tag-gold">+Weight</span>
+                <span style="font-size:0.9rem; color:var(--text-dim);">Capital contributed to federation treasury</span>
+              </li>
+              <li style="display:flex; gap:1rem; align-items:start;">
+                <span class="tag tag-gold">+Weight</span>
+                <span style="font-size:0.9rem; color:var(--text-dim);">Training programs delivered to network</span>
+              </li>
+              <li style="display:flex; gap:1rem; align-items:start;">
+                <span class="tag" style="border-color:#c4606044; color:#c46060;">−Weight</span>
+                <span style="font-size:0.9rem; color:var(--text-dim);">Missed cycle submissions or inactive periods</span>
+              </li>
+              <li style="display:flex; gap:1rem; align-items:start;">
+                <span class="tag" style="border-color:#c4606044; color:#c46060;">Cap</span>
+                <span style="font-size:0.9rem; color:var(--text-dim);">No single node may hold >15% of total governance weight</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TREASURY FLOW -->
+  <section class="section section--dark">
+    <div class="container">
+      <p class="section-label reveal">Treasury Architecture</p>
+      <h2 class="section-title reveal">How value flows through the federation.</h2>
+      <p class="section-sub reveal">
+        The treasury is a multi-sig smart contract. No single party controls it.
+        Distributions are triggered by verifiable on-chain conditions — contribution
+        proofs, cycle completions, and DAO votes.
+      </p>
+
+      <div class="treasury-grid reveal">
+        <div class="treasury-col">
+          <p style="font-family:var(--mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-faint); margin-bottom:0.5rem;">Inflows</p>
+          <div class="treasury-item">
+            <h4>Node Contributions</h4>
+            <p>% of node revenue committed to federation treasury as a condition of membership. Rate set by DAO vote.</p>
+          </div>
+          <div class="treasury-item">
+            <h4>Training Program Revenue</h4>
+            <p>Income from external-facing programs, retreats, and credential licensing flows to treasury.</p>
+          </div>
+          <div class="treasury-item">
+            <h4>Capital Partners</h4>
+            <p>Aligned investors or grant sources contribute to the treasury in exchange for defined terms — no equity in individual nodes.</p>
+          </div>
+          <div class="treasury-item">
+            <h4>Network Services</h4>
+            <p>Fees from external use of federation infrastructure, legal templates, or technical OS components.</p>
+          </div>
+        </div>
+
+        <div class="treasury-arrow">⇄</div>
+
+        <div style="display:flex; flex-direction:column; gap:1.5rem;">
+          <div class="treasury-center">
+            <h3>Federation Treasury</h3>
+            <p>Multi-sig smart contract. Governed by DAO. Auditable by all members.</p>
+            <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border);">
+              <p style="font-family:var(--mono); font-size:0.65rem; letter-spacing:0.1em; color:var(--text-faint);">DISTRIBUTION TRIGGERS</p>
+              <p style="font-size:0.82rem; color:var(--text-dim); margin-top:0.5rem;">Automatic on cycle close + contribution proof. Discretionary via DAO vote. Emergency via 2-of-3 guardian multisig.</p>
+            </div>
+          </div>
+          <div class="treasury-col">
+            <p style="font-family:var(--mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-faint); margin-bottom:0.5rem;">Outflows</p>
+            <div class="treasury-item" style="border-top:2px solid var(--green);">
+              <h4>Contribution Rewards</h4>
+              <p>Distributed to nodes proportional to verified contribution weight. Automatic on cycle close.</p>
+            </div>
+            <div class="treasury-item">
+              <h4>Capital Access</h4>
+              <p>Preferred loans and matching funds for node-level projects. Governed by DAO criteria.</p>
+            </div>
+            <div class="treasury-item">
+              <h4>Resilience Buffer</h4>
+              <p>Legal defense fund, emergency liquidity, and disaster recovery for member nodes.</p>
+            </div>
+            <div class="treasury-item">
+              <h4>Infrastructure</h4>
+              <p>OS development, record storage network, and federation communication layer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label reveal">Technical Architecture</p>
+      <h2 class="section-title reveal">The technology choices.</h2>
+      <p class="section-sub reveal">
+        Chosen for alignment with the project's values: open source, minimal trust
+        requirements, low operating cost, and offline-capable where possible.
+      </p>
+
+      <div style="overflow-x:auto;" class="reveal">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>Layer</th>
+              <th>Component</th>
+              <th>Why</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Node OS</strong></td>
+              <td>Tauri (Rust + Web frontend)</td>
+              <td>Cross-platform desktop app, tiny binary, offline-capable, Rust for crypto and P2P</td>
+              <td class="tbd">Spec</td>
+            </tr>
+            <tr>
+              <td><strong>Node OS</strong></td>
+              <td>Local SQLite / embedded DB</td>
+              <td>Cycle records and contribution ledger stored locally without server dependency</td>
+              <td class="tbd">Spec</td>
+            </tr>
+            <tr>
+              <td><strong>P2P Mesh</strong></td>
+              <td>libp2p (rust-libp2p)</td>
+              <td>Battle-tested P2P networking, NAT traversal, pub/sub for inter-node messaging</td>
+              <td class="tbd">Spec</td>
+            </tr>
+            <tr>
+              <td><strong>Messaging</strong></td>
+              <td>Nostr Protocol</td>
+              <td>Keypair-based, relay-optional, censorship-resistant inter-node communication</td>
+              <td class="tbd">Spec</td>
+            </tr>
+            <tr>
+              <td><strong>Record Storage</strong></td>
+              <td>IPFS / Filecoin</td>
+              <td>Content-addressed distributed storage. Records survive any single node failure.</td>
+              <td class="tbd">Spec</td>
+            </tr>
+            <tr>
+              <td><strong>Blockchain</strong></td>
+              <td>Base (L2 on Ethereum)</td>
+              <td>Low gas costs, EVM-compatible, Coinbase infrastructure backing, stable</td>
+              <td class="tbd">Spec</td>
+            </tr>
+            <tr>
+              <td><strong>Smart Contracts</strong></td>
+              <td>Solidity on Base</td>
+              <td>Node registry, contribution proof anchoring, treasury multi-sig, DAO governance</td>
+              <td class="tbd">Spec</td>
+            </tr>
+            <tr>
+              <td><strong>DAO Framework</strong></td>
+              <td>OpenZeppelin Governor</td>
+              <td>Audited, modular DAO governance contracts. Avoids re-inventing complex security-critical code.</td>
+              <td class="tbd">Spec</td>
+            </tr>
+            <tr>
+              <td><strong>Identity</strong></td>
+              <td>DID (Decentralized IDs)</td>
+              <td>Self-sovereign identity for nodes and members. No central identity provider.</td>
+              <td class="tbd">Spec</td>
+            </tr>
+            <tr>
+              <td><strong>Frontend</strong></td>
+              <td>Astro (static site) + Tauri shell</td>
+              <td>Lightweight, fast, works as both website and desktop app shell</td>
+              <td class="tbd">Spec</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPLEMENTATION PHASES -->
+  <section class="section section--mid">
+    <div class="container">
+      <p class="section-label reveal">Roadmap</p>
+      <h2 class="section-title reveal">DAO implementation in three phases.</h2>
+      <p class="section-sub reveal">
+        Blockchain infrastructure is introduced incrementally. Early nodes don't need
+        the full stack — the OS works without it. Federation features activate as
+        the network matures.
+      </p>
+      <div class="phase-track">
+        <div class="phase-col active reveal">
+          <div class="phase-header">
+            <p class="phase-num">Phase 1 · Now</p>
+            <h3>Local OS + Signed Records</h3>
+          </div>
+          <div class="phase-body">
+            <ul>
+              <li>Node OS runs locally, fully offline</li>
+              <li>Cycle records generated and signed by node keypair</li>
+              <li>Contribution ledger tracked locally</li>
+              <li>No blockchain required — just cryptographic signatures</li>
+              <li>Records backed up manually or via simple cloud storage</li>
+              <li>Pilot nodes establish base patterns</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase-col reveal" data-delay="80">
+          <div class="phase-header">
+            <p class="phase-num">Phase 2 · 6–12 months</p>
+            <h3>Federation + IPFS Records</h3>
+          </div>
+          <div class="phase-body">
+            <ul>
+              <li>Nodes connect via libp2p mesh</li>
+              <li>Records stored to IPFS at cycle close</li>
+              <li>Hashes anchored to Base L2</li>
+              <li>Node registry smart contract live</li>
+              <li>Basic inter-node contribution tracking</li>
+              <li>Manual DAO voting for key decisions</li>
+            </ul>
+          </div>
+        </div>
+        <div class="phase-col reveal" data-delay="160">
+          <div class="phase-header">
+            <p class="phase-num">Phase 3 · 12–24 months</p>
+            <h3>Full DAO + Treasury</h3>
+          </div>
+          <div class="phase-body">
+            <ul>
+              <li>Treasury smart contract deployed</li>
+              <li>Contribution-weighted governance live</li>
+              <li>Automatic reward distributions on cycle close</li>
+              <li>Capital access programs governed by DAO</li>
+              <li>Full disaster recovery via distributed records</li>
+              <li>Open to external nodes and federations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container text-center">
+      <p class="section-label reveal">Next</p>
+      <h2 style="max-width:500px; margin:0 auto 1.5rem;" class="reveal">See how to participate in building this.</h2>
+      <a href="participate.html" class="btn btn-primary reveal">Participation Pathways →</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="footer-logo">Mastermind<span style="color:var(--gold)">City</span></span>
+  <ul class="footer-links">
+    <li><a href="index.html">Vision</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="blockchain-dao.html">DAO & Records</a></li>
+    <li><a href="participate.html">Participate</a></li>
+  </ul>
+  <span class="footer-copy">A proposal for resilient, opt-in cooperative civilization.</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

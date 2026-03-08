@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How It Works — Mastermind City</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── cycle timeline ── */
+    .cycle-track {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 0;
+      position: relative;
+    }
+
+    .cycle-track::before {
+      content: '';
+      position: absolute;
+      left: 39px;
+      top: 1.5rem;
+      bottom: 1.5rem;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--gold), var(--green), var(--border));
+    }
+
+    .cycle-day {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+      padding-top: 2.4rem;
+      text-align: center;
+    }
+
+    .cycle-block {
+      padding: 2rem 0 2rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cycle-block:last-child {
+      border-bottom: none;
+    }
+
+    .cycle-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--bg);
+      display: inline-block;
+      margin-top: 2.6rem;
+      margin-left: -5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cycle-dot.green {
+      background: var(--green);
+    }
+
+    .cycle-dot.dim {
+      background: var(--border2);
+    }
+
+    .cycle-phase {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .cycle-phase.open {
+      color: var(--gold);
+    }
+
+    .cycle-phase.build {
+      color: var(--green);
+    }
+
+    .cycle-phase.review {
+      color: #7a8fb0;
+    }
+
+    .cycle-phase.close {
+      color: #9a8a70;
+    }
+
+    .cycle-block h3 {
+      margin-bottom: 0.6rem;
+    }
+
+    .cycle-block p {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      max-width: 55ch;
+    }
+
+    .cycle-tasks {
+      list-style: none;
+      margin-top: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .cycle-tasks li {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.04em;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .cycle-tasks li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--text-faint);
+    }
+
+    /* ── OS trigger moments ── */
+    .trigger-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .trigger-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      background: var(--surface);
+    }
+
+    .trigger-card.active-trigger {
+      border-color: var(--gold-dim);
+    }
+
+    .trigger-icon {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .trigger-icon::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    .trigger-card h4 {
+      margin-bottom: 0.4rem;
+      font-size: 1.05rem;
+    }
+
+    .trigger-card p {
+      color: var(--text-dim);
+      font-size: 0.88rem;
+    }
+
+    /* ── decision flow ── */
+    .decision-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 600px;
+    }
+
+    .df-step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .df-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 0.5rem;
+    }
+
+    .df-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    .df-circle.gold {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .df-line {
+      width: 1px;
+      flex: 1;
+      min-height: 2rem;
+      background: var(--border);
+      margin-top: 4px;
+    }
+
+    .df-content {
+      padding-bottom: 2rem;
+    }
+
+    .df-content h4 {
+      margin-bottom: 0.3rem;
+      font-size: 1.05rem;
+    }
+
+    .df-content p {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+    }
+
+    /* daily rhythm */
+    .rhythm-row {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .rhythm-row:last-child {
+      border-bottom: none;
+    }
+
+    .rhythm-time {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      padding-top: 0.15rem;
+    }
+
+    .rhythm-detail h4 {
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .rhythm-detail p {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+    }
+
+    /* accordion for faq */
+    .accordion-item {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .accordion-trigger {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--text);
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      padding: 1.2rem 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .accordion-trigger::after {
+      content: '+';
+      font-family: var(--mono);
+      font-size: 1rem;
+      color: var(--text-faint);
+      flex-shrink: 0;
+      transition: transform .3s;
+    }
+
+    .accordion-item.open .accordion-trigger::after {
+      transform: rotate(45deg);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .35s ease;
+    }
+
+    .accordion-body-inner {
+      padding-bottom: 1.5rem;
+      color: var(--text-dim);
+      font-size: 0.95rem;
+    }
+
+    .accordion-body-inner p {
+      margin-bottom: 0.8rem;
+    }
+
+    .accordion-body-inner p:last-child {
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Mastermind<span>City</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Vision</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="node-types.html">Node Types</a></li>
+      <li><a href="model.html">Model</a></li>
+      <li><a href="charter.html">Charter</a></li>
+      <li><a href="blockchain-dao.html">DAO & Records</a></li>
+      <li><a href="participate.html">Participate</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero" style="min-height:55vh;">
+      <div class="hero-bg"></div>
+      <div class="hero-grid-lines"></div>
+      <div class="hero-content">
+        <p class="hero-label">Operating Mechanics</p>
+        <h1>How a node <em>actually works.</em></h1>
+        <p class="hero-sub">
+          The 30-day cycle, the five roles, the decision framework, and the moments
+          when the OS speaks — and when it steps back.
+        </p>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section class="section">
+      <div class="container">
+        <div class="grid-2" style="gap:5rem; align-items:start;">
+          <div>
+            <p class="section-label reveal">Core Principle</p>
+            <h2 class="section-title reveal">The OS is mostly silence.</h2>
+            <p style="color:var(--text-dim);" class="reveal">
+              A well-run node doesn't feel like it's running software. People meet,
+              work, decide, eat, sleep. Life happens. The OS exists at the edges —
+              a framework consulted when something needs to be decided, a timer
+              that marks the rhythm, a record that remembers what people forget.
+            </p>
+            <p style="color:var(--text-dim); margin-top:1rem;" class="reveal">
+              Think of it like a building's electrical system. You don't think about
+              it while you're cooking. It's there when you need the light.
+            </p>
+            <div class="callout callout-green mt-2 reveal">
+              <strong style="color:var(--green)">Design rule:</strong> If the OS
+              requires daily active engagement, it has failed. It should surface only
+              at structurally important moments — transitions, conflicts, reporting,
+              and formation.
+            </div>
+          </div>
+          <div class="reveal">
+            <p
+              style="font-family:var(--mono); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-faint); margin-bottom:1rem;">
+              When the OS speaks</p>
+            <div class="trigger-grid" style="grid-template-columns:1fr;">
+              <div class="trigger-card active-trigger">
+                <div class="trigger-icon">Role Rotation</div>
+                <h4>Every 90 days</h4>
+                <p>OS surfaces the rotation protocol, facilitates the handoff, and updates the node registry.</p>
+              </div>
+              <div class="trigger-card active-trigger">
+                <div class="trigger-icon">Conflict Escalation</div>
+                <h4>When a block is raised</h4>
+                <p>Any member can signal a tension. OS provides the structured resolution template.</p>
+              </div>
+              <div class="trigger-card active-trigger">
+                <div class="trigger-icon">Monthly Close</div>
+                <h4>Days 28–30</h4>
+                <p>Prompts the Chronicler to complete the cycle record and the Connector to submit the federation
+                  report.</p>
+              </div>
+              <div class="trigger-card active-trigger">
+                <div class="trigger-icon">Node Formation</div>
+                <h4>Genesis event</h4>
+                <p>Guides founding members through the charter process, role assignment, and first-cycle planning.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE 30-DAY CYCLE -->
+    <section class="section section--dark">
+      <div class="container">
+        <p class="section-label reveal">The Operating Rhythm</p>
+        <h2 class="section-title reveal">The 30-Day Cycle.</h2>
+        <p class="section-sub reveal">
+          Every node, regardless of what it does or how it lives, runs on the same
+          monthly heartbeat. The content changes. The rhythm doesn't.
+        </p>
+
+        <div class="cycle-track">
+
+          <div class="cycle-day">D 1–3</div>
+          <div style="display:flex; align-items:flex-start; gap:0;">
+            <span class="cycle-dot"></span>
+            <div class="cycle-block">
+              <p class="cycle-phase open">Opening</p>
+              <h3>Monthly Council</h3>
+              <p>The node gathers. Navigator chairs. The previous month's record is read aloud by the Chronicler. Each
+                member checks in: capacity, intention, anything unresolved.</p>
+              <ul class="cycle-tasks">
+                <li>Review last month's Chronicler record</li>
+                <li>Each member states their bandwidth for the month (full / partial / limited)</li>
+                <li>Navigator proposes the month's primary focus</li>
+                <li>Consent round — does this feel good enough to try?</li>
+                <li>Steward presents current resource picture</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="cycle-day">D 4–7</div>
+          <div style="display:flex; align-items:flex-start; gap:0;">
+            <span class="cycle-dot"></span>
+            <div class="cycle-block">
+              <p class="cycle-phase open">Planning</p>
+              <h3>Work Breakdown</h3>
+              <p>Builder(s) break the month's focus into concrete deliverables. Connector identifies any inter-node
+                dependencies or support needed from the federation.</p>
+              <ul class="cycle-tasks">
+                <li>Deliverables mapped to owners</li>
+                <li>Resource requirements surfaced to Steward</li>
+                <li>Inter-node requests drafted by Connector</li>
+                <li>Chronicler opens the month's record</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="cycle-day">D 8–21</div>
+          <div style="display:flex; align-items:flex-start; gap:0;">
+            <span class="cycle-dot green"></span>
+            <div class="cycle-block">
+              <p class="cycle-phase build">Build</p>
+              <h3>Execution Sprint</h3>
+              <p>The longest phase. The OS is mostly silent here. People work. Weekly check-ins are brief — status,
+                blockers, anything that needs the group. The OS surfaces only if a tension is flagged.</p>
+              <ul class="cycle-tasks">
+                <li>Weekly 30-min stand-up (Navigator facilitates)</li>
+                <li>Any member can raise a tension at any time</li>
+                <li>Steward tracks contribution as it happens</li>
+                <li>Connector maintains inter-node communications</li>
+                <li>Chronicler records notable events and decisions as they occur</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="cycle-day">D 22–27</div>
+          <div style="display:flex; align-items:flex-start; gap:0;">
+            <span class="cycle-dot dim"></span>
+            <div class="cycle-block">
+              <p class="cycle-phase review">Review</p>
+              <h3>Retrospective</h3>
+              <p>A structured review of the month. What happened? What worked? What do we carry forward? This is the
+                reflective core of the node's learning cycle.</p>
+              <ul class="cycle-tasks">
+                <li>Each member: one thing that worked, one thing to improve</li>
+                <li>Steward presents contribution summary</li>
+                <li>Unresolved tensions addressed in structured format</li>
+                <li>Navigator synthesizes the month's learnings</li>
+                <li>Chronicler captures the retrospective in the node's record</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="cycle-day">D 28–30</div>
+          <div style="display:flex; align-items:flex-start; gap:0;">
+            <span class="cycle-dot"></span>
+            <div class="cycle-block">
+              <p class="cycle-phase close">Close</p>
+              <h3>Record &amp; Submit</h3>
+              <p>The Chronicler finalizes the month's record. The Connector submits the federation report (if the node
+                is federated). The cycle closes. A brief rest before the next opening.</p>
+              <ul class="cycle-tasks">
+                <li>Chronicler completes the cycle document (signed by Navigator)</li>
+                <li>Federation report submitted: what was built, contribution logged</li>
+                <li>Steward reconciles the ledger</li>
+                <li>Node enters a brief rest period — no meetings, no obligations</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DAILY RHYTHM -->
+    <section class="section">
+      <div class="container" style="max-width:700px;">
+        <p class="section-label reveal">Daily Life</p>
+        <h2 class="section-title reveal">A typical week in a node.</h2>
+        <p class="section-sub reveal">
+          Outside the structured phases, daily life looks like this.
+          The OS doesn't prescribe it — this is what tends to emerge.
+        </p>
+        <div class="reveal">
+          <div class="rhythm-row">
+            <span class="rhythm-time">Morning</span>
+            <div class="rhythm-detail">
+              <h4>Async check-in</h4>
+              <p>A brief status signal — a physical board, a group message, or just a conversation at breakfast. Is
+                everyone working? Does anyone need something? No meeting required.</p>
+            </div>
+          </div>
+          <div class="rhythm-row">
+            <span class="rhythm-time">Weekly</span>
+            <div class="rhythm-detail">
+              <h4>Council Stand-up</h4>
+              <p>30 minutes, Navigator chairs. Each person: what did I do, what am I doing, do I have any blockers? The
+                OS is open on a device in the room, consulted only if a decision needs to be logged.</p>
+            </div>
+          </div>
+          <div class="rhythm-row">
+            <span class="rhythm-time">As Needed</span>
+            <div class="rhythm-detail">
+              <h4>Tension Signals</h4>
+              <p>Any member, at any time, can raise a tension — a feeling that something isn't working. The OS provides
+                a simple template: what is the tension? what would be better? what do you need from the group?</p>
+            </div>
+          </div>
+          <div class="rhythm-row">
+            <span class="rhythm-time">Monthly</span>
+            <div class="rhythm-detail">
+              <h4>Full Council</h4>
+              <p>The structured opening and close. 2–3 hours. The only required long meeting. Everything else is
+                lightweight by design.</p>
+            </div>
+          </div>
+          <div class="rhythm-row">
+            <span class="rhythm-time">Quarterly</span>
+            <div class="rhythm-detail">
+              <h4>Role Rotation</h4>
+              <p>The OS surfaces the rotation protocol. Roles shift. A transition document is written by the outgoing
+                role-holder for the incoming. Takes half a day.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DECISION FRAMEWORK -->
+    <section class="section section--mid">
+      <div class="container">
+        <div class="grid-2" style="gap:5rem; align-items:start;">
+          <div>
+            <p class="section-label reveal">Governance</p>
+            <h2 class="section-title reveal">How decisions get made.</h2>
+            <p style="color:var(--text-dim); margin-bottom:1.5rem;" class="reveal">
+              Mastermind City uses consent-based governance, borrowed from sociocracy.
+              The key distinction: a decision doesn't need everyone to love it —
+              it needs no one to have a principled objection to trying it.
+            </p>
+            <p style="color:var(--text-dim);" class="reveal">
+              This removes the veto power of the most risk-averse member while
+              preserving genuine protection for serious ethical concerns.
+              "I don't love this" is not a block. "This violates our charter" is.
+            </p>
+            <div class="callout mt-2 reveal">
+              <strong class="text-gold">The block rule:</strong> A block must be
+              accompanied by a counter-proposal. You can't just say no —
+              you must offer a different path. This keeps the process generative
+              rather than merely protective.
+            </div>
+          </div>
+          <div class="reveal">
+            <div class="decision-flow">
+              <div class="df-step">
+                <div class="df-connector">
+                  <div class="df-circle gold">01</div>
+                  <div class="df-line"></div>
+                </div>
+                <div class="df-content">
+                  <h4>Proposal</h4>
+                  <p>Any member can bring a proposal: a project, a change, a purchase, a direction. It goes to the group
+                    with context.</p>
+                </div>
+              </div>
+              <div class="df-step">
+                <div class="df-connector">
+                  <div class="df-circle">02</div>
+                  <div class="df-line"></div>
+                </div>
+                <div class="df-content">
+                  <h4>Clarifying Questions</h4>
+                  <p>Members ask questions of understanding only — not evaluation. "What does this cost?" not "Are you
+                    sure this is a good idea?"</p>
+                </div>
+              </div>
+              <div class="df-step">
+                <div class="df-connector">
+                  <div class="df-circle">03</div>
+                  <div class="df-line"></div>
+                </div>
+                <div class="df-content">
+                  <h4>Reactions</h4>
+                  <p>Each member gives a brief reaction. The proposer listens. They may amend the proposal based on what
+                    they hear.</p>
+                </div>
+              </div>
+              <div class="df-step">
+                <div class="df-connector">
+                  <div class="df-circle">04</div>
+                  <div class="df-line"></div>
+                </div>
+                <div class="df-content">
+                  <h4>Consent Round</h4>
+                  <p>Navigator asks: "Does anyone have a principled objection to trying this?" No objection = it passes.
+                    An objection must come with a counter-proposal.</p>
+                </div>
+              </div>
+              <div class="df-step">
+                <div class="df-connector">
+                  <div class="df-circle gold">05</div>
+                </div>
+                <div class="df-content">
+                  <h4>Logged &amp; Assigned</h4>
+                  <p>The OS logs the decision, who owns it, and any relevant timeline. Chronicler notes it in the cycle
+                    record.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NODE FORMATION -->
+    <section class="section">
+      <div class="container">
+        <p class="section-label reveal">Starting a Node</p>
+        <h2 class="section-title reveal">The genesis process.</h2>
+        <p class="section-sub reveal">
+          Forming a new node is the one moment the OS is most active.
+          It's walking four to eight people through the process of becoming
+          a coherent operating unit. After this, the OS steps back.
+        </p>
+        <ul class="step-list reveal" style="max-width:650px;">
+          <li>
+            <span class="step-num">01</span>
+            <div class="step-content">
+              <h4>Choose a Node Type</h4>
+              <p>Select the template that most closely matches your community's purpose — homestead, studio, guild,
+                monastery, enterprise, or define your own. This sets the default role descriptions and cycle emphases.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">02</span>
+            <div class="step-content">
+              <h4>Name &amp; Charter</h4>
+              <p>The founding members give the node its name, write a one-paragraph purpose statement, and ratify the
+                base charter. The Chronicler's first task is to record this genesis document.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">03</span>
+            <div class="step-content">
+              <h4>First Role Assignment</h4>
+              <p>Founding members self-select initial roles through a consent round. No role is permanent — the first
+                rotation happens at day 90.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">04</span>
+            <div class="step-content">
+              <h4>First Council</h4>
+              <p>The OS runs the founding group through the first Opening. What is our focus for this first cycle? What
+                do we have? What do we need? What are our agreements?</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">05</span>
+            <div class="step-content">
+              <h4>Cryptographic Identity</h4>
+              <p>The node generates a keypair. This becomes its verifiable identity in the federation — enabling
+                inter-node trust, contribution proof, and secure communication without a central authority.</p>
+            </div>
+          </li>
+          <li>
+            <span class="step-num">06</span>
+            <div class="step-content">
+              <h4>OS Steps Back</h4>
+              <p>Formation complete. The OS fades to background. A dashboard shows where you are in the cycle. The next
+                time it speaks is the weekly stand-up prompt on day seven.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section section--dark">
+      <div class="container" style="max-width:700px;">
+        <p class="section-label reveal">Questions</p>
+        <h2 class="section-title reveal">Common questions.</h2>
+
+        <div class="reveal mt-2">
+          <div class="accordion-item">
+            <button class="accordion-trigger">What happens when two members have serious conflict?</button>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                <p>The tension system handles this. Either member can raise a formal tension. The OS provides a
+                  structured format: state the tension neutrally, describe the impact, propose a resolution. The group
+                  hears both sides in a structured round.</p>
+                <p>If the group can't resolve it, the Navigator makes a provisional decision. If the Navigator is one of
+                  the parties, the Steward takes that role temporarily. Persistent unresolved conflict is a signal that
+                  the node's membership may need to change — the OS includes an exit protocol that preserves dignity for
+                  all parties.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger">What if a member isn't pulling their weight?</button>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                <p>The contribution ledger is transparent. The Steward tracks what each member contributes each cycle.
+                  This visibility is the first check — people generally self-correct when their contribution is made
+                  legible.</p>
+                <p>If it persists, any member can raise a formal tension about contribution. The structured process
+                  ensures it's addressed through the system rather than through gossip or resentment. The node's charter
+                  specifies minimum contribution thresholds for continued membership.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger">Can a node leave the federation?</button>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                <p>Yes, unconditionally. Exit rights are explicit and irreversible — a node cannot be trapped in a
+                  federation. The Connector initiates the exit protocol, a 30-day wind-down period allows for settling
+                  outstanding exchanges, and the node retains all its records and identity.</p>
+                <p>This is by design. A federation that you can't leave is a prison. The only thing that makes voluntary
+                  federation valuable is that it remains voluntary.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger">Does the OS require internet access?</button>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                <p>No. The core OS runs entirely locally — on any device, including low-power hardware suitable for
+                  off-grid environments. Federation features (inter-node communication, shared ledger) require
+                  connectivity, but can operate over a mesh network rather than the public internet.</p>
+                <p>A node in a remote location can run its full 30-day cycle with zero internet. When connectivity is
+                  available, it syncs. When it isn't, it keeps running.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger">How does this relate to The Manual?</button>
+            <div class="accordion-body">
+              <div class="accordion-body-inner">
+                <p>The Manual is a companion project — a separate initiative that produces the human, cultural
+                  complement to the OS's structural layer. Where the OS handles roles, rhythms, and records, The Manual
+                  holds stories, mythology, traditions, and the living memory of the community. It's hand-transcribed,
+                  physical, and evolves organically.</p>
+                <p>Mastermind City is designed to interface with The Manual through the Chronicler role — the person
+                  most responsible for maintaining both the digital record and the physical one. But The Manual is not
+                  part of the OS. It can't be automated. That's the point.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section">
+      <div class="container text-center">
+        <p class="section-label reveal">Continue</p>
+        <h2 style="max-width:500px; margin:0 auto 1.5rem;" class="reveal">See what a node can become.</h2>
+        <p style="color:var(--text-dim); max-width:45ch; margin:0 auto 2.5rem;" class="reveal">
+          The same scaffold runs a monastery, a software studio, a family homestead,
+          and a crafts guild. Explore the node types.
+        </p>
+        <a href="node-types.html" class="btn btn-primary reveal">Explore Node Types →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span class="footer-logo">Mastermind<span style="color:var(--gold)">City</span></span>
+    <ul class="footer-links">
+      <li><a href="index.html">Vision</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="node-types.html">Node Types</a></li>
+      <li><a href="charter.html">Charter</a></li>
+      <li><a href="participate.html">Participate</a></li>
+    </ul>
+    <span class="footer-copy">A proposal for resilient, opt-in cooperative civilization.</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

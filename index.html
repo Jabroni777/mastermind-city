@@ -1,312 +1,465 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mastermind City | Parallel Communities, Shared Upside</title>
-    <meta
-      name="description"
-      content="Mastermind City is a proposal for federated, opt-in cooperative living and training systems where autonomous pods build local value and shared structures multiply outcomes."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@400;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body data-page="home">
-    <div class="ambient" aria-hidden="true">
-      <div class="orb orb-one"></div>
-      <div class="orb orb-two"></div>
-      <div class="orb orb-three"></div>
-      <div class="grid-overlay"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mastermind City — Scaffold for Parallel Communities</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* page-specific */
+    .hero-stat-row {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      flex-wrap: wrap;
+    }
+    .hero-stat {
+      border-left: 1px solid var(--border2);
+      padding-left: 1.5rem;
+    }
+    .hero-stat-num {
+      font-family: var(--serif);
+      font-size: 2.6rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+
+    /* metaphor section */
+    .metaphor-block {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .metaphor-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-faint);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      padding-top: 1rem;
+    }
+
+    /* layers diagram */
+    .layers {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-top: 2rem;
+    }
+    .layer {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      transition: background .2s;
+    }
+    .layer:hover { background: var(--surface2); }
+    .layer:last-child { border-bottom: none; }
+    .layer-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      min-width: 1.5rem;
+    }
+    .layer-name {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--text);
+      min-width: 10rem;
+    }
+    .layer-desc {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+    .layer-tag { margin-left: auto; }
+
+    /* principle cards */
+    .principle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    /* why not section */
+    .contrast-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .contrast-col {
+      padding: 2rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .contrast-col.no {
+      background: rgba(180,60,60,0.04);
+      border-color: rgba(180,60,60,0.2);
+    }
+    .contrast-col.yes {
+      background: rgba(74,124,89,0.04);
+      border-color: var(--green-dim);
+    }
+    .contrast-head {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .contrast-head.no  { color: #c46060; }
+    .contrast-head.yes { color: var(--green); }
+    .contrast-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .contrast-list li {
+      font-size: 0.95rem;
+      color: var(--text-dim);
+      padding-left: 1.2rem;
+      position: relative;
+    }
+    .contrast-list li::before {
+      content: attr(data-marker);
+      position: absolute;
+      left: 0;
+    }
+
+    @media (max-width: 768px) {
+      .metaphor-block { grid-template-columns: 1fr; }
+      .metaphor-label { writing-mode: horizontal-tb; transform: none; }
+      .contrast-grid  { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Mastermind<span>City</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Vision</a></li>
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="node-types.html">Node Types</a></li>
+    <li><a href="model.html">Model</a></li>
+    <li><a href="charter.html">Charter</a></li>
+    <li><a href="blockchain-dao.html">DAO & Records</a></li>
+    <li><a href="participate.html">Participate</a></li>
+  </ul>
+  <button class="nav-hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-content">
+      <p class="hero-label">Operating System for Parallel Communities</p>
+      <h1>The scaffold on which <em>living communities</em> grow.</h1>
+      <p class="hero-sub">
+        Mastermind City is not a community. It is the structural layer beneath communities —
+        the bones that give muscle its leverage, the reef scaffold that life grows upon.
+        Lightweight, non-authoritarian, and designed to fade into the background.
+      </p>
+      <div class="hero-ctas">
+        <a href="how-it-works.html" class="btn btn-primary">How It Works</a>
+        <a href="node-types.html"   class="btn btn-secondary">Node Types</a>
+        <a href="charter.html"      class="btn btn-ghost">Read Charter</a>
+      </div>
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <div class="hero-stat-num">4–8</div>
+          <div class="hero-stat-label">people per node</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">30d</div>
+          <div class="hero-stat-label">operating cycle</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">∞</div>
+          <div class="hero-stat-label">community forms</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">0</div>
+          <div class="hero-stat-label">central authority</div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <header class="topbar">
-      <div class="container topbar-inner">
-        <a class="brand" href="index.html"><span>Mastermind</span> City</a>
-        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-          <span></span>
-          <span></span>
-        </button>
-        <nav class="site-nav" id="site-nav">
-          <a class="nav-link nav-home" href="index.html">Vision</a>
-          <a class="nav-link nav-model" href="model.html">Model</a>
-          <a class="nav-link nav-charter" href="charter.html">Charter</a>
-          <a class="nav-link nav-technology" href="technology.html">Technology</a>
-          <a class="nav-link nav-participate cta-link" href="participate.html">Participate</a>
-        </nav>
-      </div>
-    </header>
-
-    <main>
-      <section class="hero">
-        <div class="container hero-grid">
-          <div class="reveal">
-            <p class="kicker">Opt-In Civic Design</p>
-            <h1>
-              <span class="text-gradient">Parallel communities</span> that can scale
-              without centralizing control.
-            </h1>
-            <p class="lede">
-              Mastermind City proposes a future where autonomous pods build
-              cooperative living nodes and training centers, while federated
-              infrastructure multiplies upside across the entire network.
-            </p>
-            <div class="actions">
-              <a class="btn btn-primary" href="model.html">Explore the Model</a>
-              <a class="btn btn-secondary" href="participate.html">Join a Build Path</a>
-              <a class="btn btn-ghost" href="charter.html">Read Pod Charter</a>
-            </div>
+  <!-- THE CORE IDEA -->
+  <section class="section">
+    <div class="container">
+      <div class="metaphor-block reveal">
+        <div class="metaphor-label">Core Proposition</div>
+        <div>
+          <p class="section-label">What This Is</p>
+          <h2 class="section-title">Infrastructure, not ideology.</h2>
+          <p class="section-sub">
+            Most attempts to build alternative communities fail at the same two points:
+            they either collapse under social friction with no structure to resolve it,
+            or they over-specify culture and become cults. Mastermind City solves the
+            first problem without causing the second.
+          </p>
+          <p style="color:var(--text-dim); margin-bottom:1.5rem;">
+            Think of a sunken ship placed on the ocean floor to seed a coral reef. 
+            The ship doesn't dictate what grows on it — it provides the hard surface
+            that life requires to attach, build structure, and compound. 
+            Mastermind City is that ship.
+          </p>
+          <p style="color:var(--text-dim);">
+            It supplies the operating rhythms, decision frameworks, role structures,
+            and inter-node protocols that keep small groups from burning out or
+            fragmenting — without prescribing what those groups are for, what they
+            believe, or how they live. Culture is generated by the people, guided by
+            <em style="color:var(--text)">The Manual</em> — a hand-written companion
+            document unique to each node.
+          </p>
+          <div class="callout mt-2">
+            <strong class="text-gold">The design constraint:</strong> The OS must be
+            light enough that a node of five people running a monastery and a node
+            of five people running a software studio can both use it without modification.
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          <aside class="panel signal-panel reveal">
-            <div class="city-map" aria-hidden="true">
-              <div class="pulse-ring ring-a"></div>
-              <div class="pulse-ring ring-b"></div>
-              <div class="beam beam-a"></div>
-              <div class="beam beam-b"></div>
-              <div class="beam beam-c"></div>
-              <div class="beam beam-d"></div>
-              <div class="city-node node-core">Federation</div>
-              <div class="city-node node-a">Pod Alpha</div>
-              <div class="city-node node-b">Pod Delta</div>
-              <div class="city-node node-c">Training Hub</div>
-              <div class="city-node node-d">Co-Living Node</div>
-            </div>
-            <h3>Core Strategic Question</h3>
-            <p>
-              If a pod invests real time, money, and risk to build value, why
-              contribute upward into a federation instead of staying independent?
-            </p>
-            <p class="callout">
-              Federation must be an <strong>upside multiplier</strong>, not a moral
-              demand. If shared systems do not increase yield, resilience, and
-              optionality, fragmentation is rational.
-            </p>
-            <ul class="inline-list">
-              <li>Autonomous pods keep ownership clarity and exit rights.</li>
-              <li>Federation offers legal, financial, and reputation infrastructure.</li>
-              <li>DAO rails enforce transparent contribution, payout, and governance rules.</li>
+  <!-- SYSTEM LAYERS -->
+  <section class="section section--dark">
+    <div class="container">
+      <p class="section-label reveal">Architecture</p>
+      <h2 class="section-title reveal">Three interlocking layers.</h2>
+      <p class="section-sub reveal">
+        Mastermind City operates across distinct layers, each with a clear separation
+        of concerns. The OS governs structure. People govern culture. The federation
+        governs interoperability.
+      </p>
+
+      <div class="layers reveal">
+        <div class="layer">
+          <span class="layer-num">01</span>
+          <span class="layer-name">Node OS</span>
+          <span class="layer-desc">The downloadable scaffold. Roles, rhythms, decision frameworks, contribution ledger. Runs locally, works off-grid.</span>
+          <span class="layer-tag tag tag-gold">You are here</span>
+        </div>
+        <div class="layer">
+          <span class="layer-num">02</span>
+          <span class="layer-name">The Manual</span>
+          <span class="layer-desc">A hand-transcribed physical book maintained by each node. Stories, mythology, local culture. The organic complement to the OS. A separate companion project.</span>
+          <span class="layer-tag tag">Companion</span>
+        </div>
+        <div class="layer">
+          <span class="layer-num">03</span>
+          <span class="layer-name">Federation Protocol</span>
+          <span class="layer-desc">The inter-node network. Shared capital access, labor exchange, reputation rails, mesh communication between autonomous nodes.</span>
+          <span class="layer-tag tag tag-green">Phase 2</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT IT IS / ISN'T -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label reveal">Clarification</p>
+      <h2 class="section-title reveal">What Mastermind City is not.</h2>
+      <p class="section-sub reveal">
+        The clearest way to define a new thing is to draw its borders.
+      </p>
+      <div class="contrast-grid reveal">
+        <div class="contrast-col no">
+          <p class="contrast-head no">✕ Not This</p>
+          <ul class="contrast-list">
+            <li data-marker="—">A commune with shared ideology</li>
+            <li data-marker="—">A DAO that governs by token vote</li>
+            <li data-marker="—">A platform that monetizes your community</li>
+            <li data-marker="—">A franchise model with brand enforcement</li>
+            <li data-marker="—">A utopian political project</li>
+            <li data-marker="—">A replacement for human judgment</li>
+          </ul>
+        </div>
+        <div class="contrast-col yes">
+          <p class="contrast-head yes">✓ This</p>
+          <ul class="contrast-list">
+            <li data-marker="→">A structural scaffold any community can adopt</li>
+            <li data-marker="→">Consent-based governance with clear role rotation</li>
+            <li data-marker="→">Open-source, locally run, offline-capable</li>
+            <li data-marker="→">Voluntary federation with exit rights preserved</li>
+            <li data-marker="→">Agnostic to culture, religion, economics</li>
+            <li data-marker="→">Technology that fades into the background</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section class="section section--mid">
+    <div class="container">
+      <p class="section-label reveal">Design Principles</p>
+      <h2 class="section-title reveal">Built to disappear.</h2>
+      <p class="section-sub reveal">
+        The best infrastructure is invisible when things are working. These principles
+        shape every decision in the OS design.
+      </p>
+      <div class="principle-grid">
+        <div class="card card-accent reveal">
+          <div class="card-icon">⬡</div>
+          <h3>Minimum Viable Structure</h3>
+          <p>Only the frameworks necessary to prevent collapse. Nothing that constrains what communities can become.</p>
+        </div>
+        <div class="card card-accent reveal" data-delay="80">
+          <div class="card-icon">↻</div>
+          <h3>Rotating Roles</h3>
+          <p>No permanent leadership. Responsibility rotates to distribute power, develop capability, and prevent calcification.</p>
+        </div>
+        <div class="card card-accent reveal" data-delay="160">
+          <div class="card-icon">◎</div>
+          <h3>Consent, Not Consensus</h3>
+          <p>Decisions require "good enough to try," not unanimous agreement. Removes the veto power of the most risk-averse.</p>
+        </div>
+        <div class="card card-accent reveal" data-delay="240">
+          <div class="card-icon">⤢</div>
+          <h3>Local-First</h3>
+          <p>The OS runs on your hardware, in your space. No cloud dependency, no platform risk. Works on a mesh network or completely offline.</p>
+        </div>
+        <div class="card card-accent reveal" data-delay="80">
+          <div class="card-icon">⇌</div>
+          <h3>Voluntary Federation</h3>
+          <p>Nodes connect to other nodes because it compounds their value. Exit rights are explicit and preserved. No moral debt.</p>
+        </div>
+        <div class="card card-accent reveal" data-delay="160">
+          <div class="card-icon">✦</div>
+          <h3>Stem Cell Design</h3>
+          <p>One template, infinite expressions. A monastery, a studio, a family homestead, a business collective — all run the same OS.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE MASTERMIND -->
+  <section class="section">
+    <div class="container">
+      <div class="grid-2" style="align-items:start; gap:5rem;">
+        <div>
+          <p class="section-label reveal">Foundation</p>
+          <h2 class="section-title reveal">The Mastermind principle.</h2>
+          <p style="color:var(--text-dim); margin-bottom:1.2rem;" class="reveal">
+            Napoleon Hill observed that when two or more people coordinate
+            knowledge and effort toward a definite purpose, they generate a
+            third intelligence — something none of them possess alone.
+            He called it the Mastermind.
+          </p>
+          <p style="color:var(--text-dim); margin-bottom:1.2rem;" class="reveal">
+            Research confirms the insight. Groups between four and eight people
+            hit a coordination sweet spot: enough diversity of perspective to
+            challenge assumptions, small enough for genuine accountability and trust.
+          </p>
+          <p style="color:var(--text-dim);" class="reveal">
+            Mastermind City takes this as its atomic unit. The node — four to eight
+            people with distinct rotating roles — is both the human governance layer
+            and the economic engine of the community it serves.
+          </p>
+        </div>
+        <div class="reveal">
+          <div class="card" style="background:var(--surface);">
+            <p class="section-label mb-1">Node Structure</p>
+            <ul class="step-list">
+              <li>
+                <span class="step-num">01</span>
+                <div class="step-content">
+                  <h4>Navigator</h4>
+                  <p>Holds the vision, chairs the council, final tiebreaker on blocked decisions.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">02</span>
+                <div class="step-content">
+                  <h4>Steward</h4>
+                  <p>Resource management, contribution ledger, treasury of the node.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">03</span>
+                <div class="step-content">
+                  <h4>Chronicler</h4>
+                  <p>Records decisions and history. Primary interface with The Manual.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">04</span>
+                <div class="step-content">
+                  <h4>Connector</h4>
+                  <p>Inter-node relations, federation communication, welcomes new members.</p>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">05</span>
+                <div class="step-content">
+                  <h4>Builder(s)</h4>
+                  <p>Project execution. Additional members occupy this role as node grows.</p>
+                </div>
+              </li>
             </ul>
-          </aside>
-        </div>
-
-        <div class="container metric-strip reveal">
-          <article class="metric">
-            <p class="label">Coordination Target</p>
-            <p class="value">5-8</p>
-            <p class="label">members per pod for execution velocity</p>
-          </article>
-          <article class="metric">
-            <p class="label">Delivery Cadence</p>
-            <p class="value">30d</p>
-            <p class="label">monthly strategic output submission</p>
-          </article>
-          <article class="metric">
-            <p class="label">Pilot Horizon</p>
-            <p class="value">90d</p>
-            <p class="label">from domain selection to deployable blueprint</p>
-          </article>
-        </div>
-
-        <div class="container reveal">
-          <div class="signal-band">
-            <div class="signal-track">
-              <span>Equity-weighted contribution</span>
-              <span>Exit rights preserved</span>
-              <span>Legal infrastructure layer</span>
-              <span>Insurance and resilience funds</span>
-              <span>Training center pipelines</span>
-              <span>Autonomous navigator agents</span>
-              <span>Transparent contribution ledger</span>
-              <span>DAO treasury distribution</span>
-              <span>Shared-wealth reward loops</span>
-              <span>Cooperative living pilots</span>
-              <span>Equity-weighted contribution</span>
-              <span>Exit rights preserved</span>
-              <span>Legal infrastructure layer</span>
-              <span>Insurance and resilience funds</span>
-              <span>Training center pipelines</span>
-              <span>Autonomous navigator agents</span>
-              <span>Transparent contribution ledger</span>
-              <span>DAO treasury distribution</span>
-              <span>Shared-wealth reward loops</span>
-              <span>Cooperative living pilots</span>
-            </div>
+            <p class="mt-2" style="font-family:var(--mono); font-size:0.68rem; color:var(--text-faint); letter-spacing:0.1em; text-transform:uppercase;">Roles rotate every 90 days</p>
           </div>
         </div>
-      </section>
-
-      <section class="section">
-        <div class="container split">
-          <div class="reveal">
-            <h2>Why Co-operate?</h2>
-            <p class="intro">
-              Small groups can build tangible assets fast, but isolated wins stay
-              fragile. The design challenge is to make federalization materially
-              superior to staying private.
-            </p>
-            <p>
-              In Mastermind City, pods do not donate value upward. They exchange
-              contribution for measurable rights: equity participation, capital
-              access, governance weight, and network-driven demand.
-            </p>
-            <p>
-              A blockchain DAO backbone records contribution proofs and routes
-              treasury rewards by rules everyone can audit, making collaboration
-              economically legible and compounding shared wealth over time.
-            </p>
-            <p>
-              This reframes cooperation from symbolic loyalty into rational strategy.
-              Contribute because it compounds, not because it is morally expected.
-            </p>
-          </div>
-
-          <aside class="panel simulator reveal" id="federation-simulator">
-            <h3>Federation Value Simulator</h3>
-            <p class="intro">
-              Move assumptions and compare a federated strategy against isolated
-              operation.
-            </p>
-
-            <div class="range-label">
-              <label for="network">Network effects</label>
-              <span data-output="network">7</span>
-            </div>
-            <input id="network" name="network" type="range" min="0" max="10" value="7" />
-
-            <div class="range-label">
-              <label for="capital">Capital multiplier access</label>
-              <span data-output="capital">8</span>
-            </div>
-            <input id="capital" name="capital" type="range" min="0" max="10" value="8" />
-
-            <div class="range-label">
-              <label for="resilience">Resilience and insurance buffer</label>
-              <span data-output="resilience">7</span>
-            </div>
-            <input id="resilience" name="resilience" type="range" min="0" max="10" value="7" />
-
-            <div class="range-label">
-              <label for="credibility">Reputation and credential leverage</label>
-              <span data-output="credibility">6</span>
-            </div>
-            <input id="credibility" name="credibility" type="range" min="0" max="10" value="6" />
-
-            <div class="range-label">
-              <label for="autonomy">Need for pure local autonomy</label>
-              <span data-output="autonomy">6</span>
-            </div>
-            <input id="autonomy" name="autonomy" type="range" min="0" max="10" value="6" />
-
-            <div class="score-grid">
-              <article class="score-card">
-                <p>Federated Upside Score</p>
-                <strong id="federate-score">0</strong>
-              </article>
-              <article class="score-card">
-                <p>Independent Score</p>
-                <strong id="independent-score">0</strong>
-              </article>
-            </div>
-
-            <div class="progress-track" aria-hidden="true">
-              <div class="progress-fill" id="federate-bar"></div>
-            </div>
-            <p id="sim-insight"></p>
-          </aside>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="container">
-          <h2 class="reveal">Nine Incentive Engines</h2>
-          <p class="intro reveal">
-            The federation survives only when contribution creates durable benefit
-            for contributors.
-          </p>
-          <div class="grid-4">
-            <article class="card reveal">
-              <h3>Equity Federation</h3>
-              <p>Pods retain revenue rights while assets become leverage points in a broader system.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Network Effects</h3>
-              <p>Shared demand generation, member referrals, and operating infrastructure increase utilization.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Capital Multiplier</h3>
-              <p>Contributing pods unlock matching funds and preferred financing for next-stage projects.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Credential Capital</h3>
-              <p>Verified delivery raises governance influence and first rights on new opportunities.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Resilience Buffer</h3>
-              <p>Legal defense, emergency liquidity, and labor exchange reduce fragility of local nodes.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Internal Market Priority</h3>
-              <p>Guild-like preferred vendor channels route contracts toward contributing pods.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Tokenized Ledger</h3>
-              <p>Labor, capital, and resource inputs are transparently tracked and tied to upside.</p>
-            </article>
-            <article class="card reveal">
-              <h3>DAO Treasury Engine</h3>
-              <p>Smart-contract rules distribute rewards to contributors and reinvest into next-wave builds.</p>
-            </article>
-            <article class="card reveal">
-              <h3>Voluntary Federalism</h3>
-              <p>Clear ownership, explicit exit rights, and opt-in participation protect local autonomy.</p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="section section-tight">
-        <div class="container panel reveal">
-          <h2>Confederated by Design</h2>
-          <p class="intro">
-            Inspired by decentralized cell structures but focused on cooperative
-            living and training ecosystems, Mastermind City combines local agency
-            with system-level coordination.
-          </p>
-          <div class="road">
-            <article class="road-step">
-              <h3>Pod Layer</h3>
-              <p>Pods run local projects, own operations, and produce monthly deliverables.</p>
-            </article>
-            <article class="road-step">
-              <h3>Federation Layer</h3>
-              <p>Shared legal/financial rails, capital engines, and standards for interoperability.</p>
-            </article>
-            <article class="road-step">
-              <h3>Public Interface</h3>
-              <p>Cooperative living programs, retreats, training centers, and open participation channels.</p>
-            </article>
-          </div>
-          <div class="actions">
-            <a class="btn btn-primary" href="model.html">See Governance + Finance Model</a>
-            <a class="btn btn-ghost" href="technology.html">See Agent-Augmented Technology</a>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <div class="container footer-inner">
-        <strong>Mastermind City</strong>
-        <p class="footer-note">A proposal for resilient, opt-in cooperative civilization design.</p>
-        <p class="footer-note">(c) <span data-year></span></p>
       </div>
-    </footer>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
-  </body>
+  <!-- CTA -->
+  <section class="section section--dark">
+    <div class="container text-center">
+      <p class="section-label reveal">Next Steps</p>
+      <h2 style="max-width:600px; margin:0 auto 1.5rem;" class="reveal">Understand the system before you build one.</h2>
+      <p style="color:var(--text-dim); max-width:50ch; margin:0 auto 3rem;" class="reveal">
+        The how-it-works page walks through a complete 30-day node cycle —
+        what members actually do, how decisions get made, and where the OS
+        speaks and when it stays silent.
+      </p>
+      <div class="flex gap-1 flex-wrap" style="justify-content:center;" >
+        <a href="how-it-works.html" class="btn btn-primary reveal">The 30-Day Cycle →</a>
+        <a href="node-types.html"   class="btn btn-secondary reveal" data-delay="80">Explore Node Types</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="footer-logo">Mastermind<span style="color:var(--gold)">City</span></span>
+  <ul class="footer-links">
+    <li><a href="how-it-works.html">How It Works</a></li>
+    <li><a href="node-types.html">Node Types</a></li>
+    <li><a href="charter.html">Charter</a></li>
+    <li><a href="blockchain-dao.html">DAO & Records</a></li>
+    <li><a href="participate.html">Participate</a></li>
+  </ul>
+  <span class="footer-copy">A proposal for resilient, opt-in cooperative civilization.</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
 </html>
