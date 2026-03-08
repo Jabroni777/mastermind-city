@@ -789,18 +789,19 @@
             </div>
           </div>
           <div class="reveal">
-            <div class="interest-form">
+            <form name="expression-of-interest" class="interest-form" method="POST" data-netlify="true"
+              onsubmit="handleSubmit(event)">
               <div class="form-field">
                 <label for="name">Your Name</label>
-                <input type="text" id="name" placeholder="How you'd like to be addressed" />
+                <input type="text" id="name" name="name" placeholder="How you'd like to be addressed" required />
               </div>
               <div class="form-field">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="For our response" />
+                <input type="email" id="email" name="email" placeholder="For our response" required />
               </div>
               <div class="form-field">
                 <label for="pathway">Your Pathway</label>
-                <select id="pathway">
+                <select id="pathway" name="pathway" required>
                   <option value="">Select a pathway…</option>
                   <option value="observer">Observer — I want to learn more</option>
                   <option value="member">Node Member — I want to join a node</option>
@@ -811,7 +812,7 @@
               </div>
               <div class="form-field">
                 <label for="node-type">Node Type Interest</label>
-                <select id="node-type">
+                <select id="node-type" name="node-type">
                   <option value="">What kind of community? (optional)</option>
                   <option value="homestead">Homestead — land, food, family</option>
                   <option value="studio">Studio — creation, media, art</option>
@@ -825,15 +826,15 @@
               </div>
               <div class="form-field">
                 <label for="message">What you're building, thinking about, or curious about</label>
-                <textarea id="message" rows="5"
+                <textarea id="message" name="message" rows="5" required
                   placeholder="No need to be polished. What's the actual thing you're trying to build or solve?"></textarea>
               </div>
-              <button class="btn btn-primary" style="width:100%;" onclick="handleSubmit()">Send Expression of
+              <button type="submit" class="btn btn-primary" style="width:100%;">Send Expression of
                 Interest</button>
               <p
                 style="font-family:var(--mono); font-size:0.62rem; color:var(--text-faint); text-align:center; margin-top:1rem; letter-spacing:0.06em;">
                 No spam. No list. Personal response only.</p>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -861,11 +862,30 @@
       event.currentTarget.classList.add('active');
     }
 
-    function handleSubmit() {
-      const btn = event.currentTarget;
-      btn.textContent = 'Received — we\'ll be in touch.';
-      btn.style.background = 'var(--green)';
+    function handleSubmit(event) {
+      event.preventDefault();
+      const form = event.target;
+      const btn = form.querySelector('button[type="submit"]');
+      const formData = new FormData(form);
+      formData.append('form-name', 'expression-of-interest');
+
+      btn.textContent = 'Sending...';
       btn.disabled = true;
+
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString()
+      })
+        .then(() => {
+          btn.textContent = 'Received — we\'ll be in touch.';
+          btn.style.background = 'var(--green)';
+        })
+        .catch((error) => {
+          console.error('Form submission error:', error);
+          btn.textContent = 'Error sending. Try again.';
+          btn.disabled = false;
+        });
     }
   </script>
 </body>
