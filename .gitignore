@@ -1,5 +1,2 @@
 # Local Netlify folder
 .netlify
-
-# macOS system files
-.DS_Store

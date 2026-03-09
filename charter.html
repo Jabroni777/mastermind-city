@@ -7,50 +7,46 @@
   <title>Mastermind City | Pod Charter</title>
   <meta name="description"
     content="Mastermind Pod Charter for disciplined strategic development of parallel institutions with clear roles, rhythm, outputs, and guardrails." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@400;600;700;800&display=swap"
-    rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
-<body data-page="charter">
-  <div class="ambient" aria-hidden="true">
-    <div class="orb orb-one"></div>
-    <div class="orb orb-two"></div>
-    <div class="orb orb-three"></div>
-    <div class="grid-overlay"></div>
-  </div>
+<body>
 
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <a class="brand" href="index.html"><span>Mastermind</span> City</a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="site-nav" id="site-nav">
-        <a class="nav-link nav-home" href="index.html">Vision</a>
-        <a class="nav-link nav-model" href="model.html">Model</a>
-        <a class="nav-link nav-charter" href="charter.html">Charter</a>
-        <a class="nav-link nav-technology" href="blockchain-dao.html">DAO & Records</a>
-        <a class="nav-link nav-participate cta-link" href="participate.html">Participate</a>
-      </nav>
-    </div>
-  </header>
+  <nav>
+    <a href="index.html" class="nav-logo">Mastermind<span>City</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Vision</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="node-types.html">Node Types</a></li>
+      <li><a href="model.html">Model</a></li>
+      <li><a href="charter.html">Charter</a></li>
+      <li><a href="blockchain-dao.html">DAO & Records</a></li>
+      <li><a href="participate.html">Participate</a></li>
+    </ul>
+    <button class="nav-hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
   <main>
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="reveal">
-          <p class="kicker">Mastermind Pod Charter</p>
-          <h1>Disciplined cells for building parallel institutions</h1>
-          <p class="lede">
-            This charter turns ambitious intent into accountable execution. Pods
-            are strategic design units, not discussion clubs.
-          </p>
-        </div>
+    <section class="hero" style="min-height:55vh;">
+      <div class="hero-bg"></div>
+      <div class="hero-grid-lines"></div>
+      <div class="hero-content">
+        <p class="hero-label">Mastermind Pod Charter</p>
+        <h1>
+          Disciplined cells for building
+          <em>parallel institutions</em>
+        </h1>
+        <p class="hero-sub">
+          This charter turns ambitious intent into accountable execution. Pods
+          are strategic design units, not discussion clubs.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
         <aside class="panel reveal">
           <h3>Purpose</h3>
           <ul class="list-clean">
@@ -92,31 +88,27 @@
 
     <section class="section">
       <div class="container">
-        <h2 class="reveal">Rotating Roles</h2>
+        <h2 class="reveal">Node Structure</h2>
         <div class="grid-3">
           <article class="card reveal">
-            <h3>Facilitator</h3>
-            <p>Maintains structure, pacing, and tactical focus during meetings.</p>
+            <h3>Navigator</h3>
+            <p>Holds the vision, chairs the council, final tiebreaker on blocked decisions.</p>
+          </article>
+          <article class="card reveal" data-delay="80">
+            <h3>Steward</h3>
+            <p>Resource management, contribution ledger, treasury of the node.</p>
+          </article>
+          <article class="card reveal" data-delay="160">
+            <h3>Chronicler</h3>
+            <p>Records decisions and history. Primary interface with The Manual.</p>
           </article>
           <article class="card reveal">
-            <h3>Synthesizer</h3>
-            <p>Translates discussion into coherent strategy outputs and decisions.</p>
+            <h3>Connector</h3>
+            <p>Inter-node relations, federation communication, welcomes new members.</p>
           </article>
-          <article class="card reveal">
-            <h3>Research Lead</h3>
-            <p>Collects comparative models, precedents, and evidence.</p>
-          </article>
-          <article class="card reveal">
-            <h3>Risk Analyst</h3>
-            <p>Stress tests legal, ethical, and structural weaknesses.</p>
-          </article>
-          <article class="card reveal">
-            <h3>Implementation Strategist</h3>
-            <p>Converts strategy into practical deployment pathways.</p>
-          </article>
-          <article class="card reveal">
-            <h3>Role Rotation Rule</h3>
-            <p>Rotate each cycle to prevent hierarchy ossification and skill silos.</p>
+          <article class="card reveal" data-delay="80">
+            <h3>Builder(s)</h3>
+            <p>Project execution. Additional members occupy this role as node grows.</p>
           </article>
         </div>
       </div>
@@ -124,25 +116,36 @@
 
     <section class="section section-tight">
       <div class="container panel reveal">
-        <h2>Meeting Rhythm + Output Contract</h2>
-        <div class="schedule">
-          <article>
-            <h3>Weekly Tactical Session (60-90 min)</h3>
-            <ul class="list-clean">
-              <li>10 min status updates</li>
-              <li>40 min domain strategy</li>
-              <li>20 min objections + stress testing</li>
-              <li>10 min assignments and owners</li>
-            </ul>
+        <h2>Meeting Rhythm</h2>
+        <p class="intro">
+          The node has a simple meeting rhythm. Three cadences, no more.
+        </p>
+
+        <div class="schedule mt-2">
+          <article class="rhythm-row">
+            <div class="rhythm-time">Daily</div>
+            <div class="rhythm-detail">
+              <h4>30 Minutes</h4>
+              <p>A brief check-in. What are you working on, what's in the way. Keeps the group present to each other
+                without consuming the day.</p>
+            </div>
           </article>
-          <article>
-            <h3>Monthly Deliverable</h3>
-            <ul class="list-clean">
-              <li>Written strategy packet (5-15 pages)</li>
-              <li>Roadmap, diagrams, and budget outline</li>
-              <li>Success metrics and integration points</li>
-              <li>No month ends without output</li>
-            </ul>
+
+          <article class="rhythm-row">
+            <div class="rhythm-time">Every 10 Days</div>
+            <div class="rhythm-detail">
+              <h4>One Hour</h4>
+              <p>Status, decisions, blockers. The Navigator chairs. The Chronicler records what matters. We leave.</p>
+            </div>
+          </article>
+
+          <article class="rhythm-row">
+            <div class="rhythm-time">End of Month</div>
+            <div class="rhythm-detail">
+              <h4>Two Hours</h4>
+              <p>We review the full cycle. What worked, what didn't, what each person contributed. The cycle record is
+                written and signed by everyone in the room.<br><br><strong>No month ends without a record.</strong></p>
+            </div>
           </article>
         </div>
       </div>
@@ -230,12 +233,17 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <strong>Mastermind City</strong>
-      <p class="footer-note">Execution discipline for federated community building.</p>
-      <p class="footer-note">(c) <span data-year></span></p>
-    </div>
+  <footer>
+    <span class="footer-logo">Mastermind<span style="color:var(--gold)">City</span></span>
+    <ul class="footer-links">
+      <li><a href="index.html">Vision</a></li>
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="node-types.html">Node Types</a></li>
+      <li><a href="model.html">Model</a></li>
+      <li><a href="blockchain-dao.html">DAO & Records</a></li>
+      <li><a href="participate.html">Participate</a></li>
+    </ul>
+    <span class="footer-copy">Execution discipline for federated community building.</span>
   </footer>
 
   <script src="script.js"></script>
